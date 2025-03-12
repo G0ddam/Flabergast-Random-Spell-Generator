@@ -1,12 +1,23 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Garamond', serif; /* Changed to a more theme-appropriate font */
+    background-color: #290d45; /* Dark purple background */
+    color: #d4d2ec; /* Soft purple text */
     padding: 20px;
     text-align: center;
 }
 
+select, button {
+    background-color: #4a2040; /* Dark purple elements */
+    color: #a4fa70; /* Bright green text */
+    border: 2px solid #d4d2ec; /* Soft purple border */
+    padding: 8px 12px;
+    margin-top: 10px;
+}
+
 #spellOutput {
     margin-top: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
+    background-color: #411e50; /* Slightly different purple for contrast */
+    border: 2px solid #8e49a3; /* Bright purple border */
     padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adding some shadow for depth */
 }
