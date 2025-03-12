@@ -197,29 +197,28 @@ const spells = {
     ]
 };
 
+function log(message) {
+    const consoleDiv = document.getElementById('consoleLog');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    consoleDiv.appendChild(messageElement);
+}
+
 function generateSpell() {
     const level = document.getElementById("spellLevel").value;
-    console.log("Selected level:", level);  // Debug: log the selected level
+    log("Selected level: " + level);
 
     const spellList = spells[level];
-    console.log("Spell list for the level:", spellList);  // Debug: log the spell list
+    if (spellList && spellList.length > 0) {
+        const randomIndex = Math.floor(Math.random() * spellList.length);
+        const randomSpell = spellList[randomIndex];
 
-    if (!spellList) {
-        console.error("No spells found for level:", level);
-        return; // Exit if no spells are found for the level
+        document.getElementById("spellName").textContent = randomSpell.Name;
+        document.getElementById("spellEffect").textContent = randomSpell.Effect;
+        log("Spell: " + randomSpell.Name + " - " + randomSpell.Effect);
+    } else {
+        log("No spells available for the selected level or incorrect level value: " + level);
     }
-
-    const randomIndex = Math.floor(Math.random() * spellList.length);
-    const randomSpell = spellList[randomIndex];
-    console.log("Random spell selected:", randomSpell);  // Debug: log the selected spell
-
-    if (!randomSpell) {
-        console.error("Failed to select a random spell from the list.");
-        return; // Exit if no spell could be randomly selected
-    }
-
-    document.getElementById("spellName").textContent = randomSpell.Name;
-    document.getElementById("spellEffect").textContent = randomSpell.Effect;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
