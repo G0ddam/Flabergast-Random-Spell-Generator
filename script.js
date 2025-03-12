@@ -115,7 +115,6 @@ const spells = {
         {"Name": "Jellyfish Jaunt", "Effect": "Summons harmless jellyfish that float through the air."},
         {"Name": "Spectral Spaghetti", "Effect": "Spaghetti appears and wraps around anything it touches."}
     ],
-    // Repeat similar fun and quirky entries for levels 5 to 8
     "5": [
         {"Name": "Feather Fiesta", "Effect": "Feathers explode from the target, tickling everyone nearby."},
         {"Name": "Grape Glue", "Effect": "Sticky grapes fall from above, sticking foes to the ground."},
