@@ -199,8 +199,29 @@ const spells = {
 
 function generateSpell() {
     const level = document.getElementById("spellLevel").value;
+    console.log("Selected level:", level);  // Debug: log the selected level
+
     const spellList = spells[level];
-    const randomSpell = spellList[Math.floor(Math.random() * spellList.length)];
-    document.getElementById("spellName").textContent = randomSpell.name;
-    document.getElementById("spellEffect").textContent = randomSpell.effect;
+    console.log("Spell list for the level:", spellList);  // Debug: log the spell list
+
+    if (!spellList) {
+        console.error("No spells found for level:", level);
+        return; // Exit if no spells are found for the level
+    }
+
+    const randomIndex = Math.floor(Math.random() * spellList.length);
+    const randomSpell = spellList[randomIndex];
+    console.log("Random spell selected:", randomSpell);  // Debug: log the selected spell
+
+    if (!randomSpell) {
+        console.error("Failed to select a random spell from the list.");
+        return; // Exit if no spell could be randomly selected
+    }
+
+    document.getElementById("spellName").textContent = randomSpell.Name;
+    document.getElementById("spellEffect").textContent = randomSpell.Effect;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('button').addEventListener('click', generateSpell);
+});
