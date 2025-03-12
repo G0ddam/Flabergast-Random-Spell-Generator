@@ -1,3 +1,31 @@
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('button').addEventListener('click', generateSpell);
+});
+
+function log(message) {
+    const consoleDiv = document.getElementById('consoleLog');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    consoleDiv.appendChild(messageElement);
+}
+
+function generateSpell() {
+    const level = document.getElementById("spellLevel").value.trim();
+    log("Selected level: " + level);
+
+    const spellList = spells[level];
+    if (spellList && spellList.length > 0) {
+        const randomIndex = Math.floor(Math.random() * spellList.length);
+        const randomSpell = spellList[randomIndex];
+
+        document.getElementById("spellName").textContent = randomSpell.Name;
+        document.getElementById("spellEffect").textContent = randomSpell.Effect;
+        log("Spell: " + randomSpell.Name + " - " + randomSpell.Effect);
+    } else {
+        log("No spells available for the selected level or incorrect level value: " + level);
+    }
+}
+
 const spells = {
     "1": [
         {"Name": "Giggling Ghosts", "Effect": "Causes spectral laughter that distracts foes."},
