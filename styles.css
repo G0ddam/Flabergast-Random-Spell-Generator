@@ -7,11 +7,12 @@ body {
 }
 
 select, button {
-    background-color: #4a2040; /* Dark purple elements */
-    color: #a4fa70; /* Bright green text */
+    background-color: #32CD32; /* Green background */
+    color: #800080; /* Purple text */
     border: 2px solid #d4d2ec; /* Soft purple border */
     padding: 8px 12px;
     margin-top: 10px;
+    cursor: pointer; /* Adds a pointer cursor on hover */
 }
 
 #spellOutput {
