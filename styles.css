@@ -35,7 +35,19 @@ select {
     width: 250px; /* Increased width */
     font-size: 1.3rem; /* Larger font size */
     border: 2px solid #8e49a3;
-    border-radius: 8px;
+    border-radius: 0; /* Remove rounded corners */
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none; /* Remove any shadow effects */
+    background-image: none; /* Remove any gradients */
+}
+
+/* Add a custom dropdown arrow */
+select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23800080' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
 }
 
 .button {
