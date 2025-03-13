@@ -7,19 +7,19 @@ body {
 }
 
 h1 {
-    font-family: 'Uncial Antiqua', cursive;
+    font-family: 'Fondamento', cursive;
     font-size: 2.5rem;
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 h2 {
-    font-family: 'Cinzel', serif;
+    font-family: 'Fondamento', cursive;
     font-weight: 700;
 }
 
 select, .button {
-    font-family: 'Cinzel', serif;
+    font-family: 'Fondamento', cursive;
     font-weight: 700;
     background-color: #32CD32; /* Green background */
     color: #800080; /* Purple text */
