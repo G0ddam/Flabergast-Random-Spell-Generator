@@ -43,7 +43,7 @@ select, .button {
 }
 
 .button {
-    font-size: 1.5rem; /* Increase the text size for the button */
+    font-size: 2rem; /* Increase the text size for the button */
     font-weight: bold; /* Make the text bold for better visibility */
 }
 
