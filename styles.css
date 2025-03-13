@@ -1,5 +1,5 @@
 body {
-    font-family: 'MedievalSharp', cursive;
+    font-family: 'Fondamento', cursive;
     background-color: #290d45;
     color: #d4d2ec;
     padding: 20px;
@@ -14,11 +14,13 @@ h1 {
 }
 
 h2 {
-    font-family: 'Uncial Antiqua', cursive;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
 }
 
 select, .button {
-    font-family: 'MedievalSharp', cursive;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
     background-color: #32CD32; /* Green background */
     color: #800080; /* Purple text */
     padding: 8px 12px;
