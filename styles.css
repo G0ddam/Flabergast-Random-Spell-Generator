@@ -61,7 +61,6 @@ select, .button {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: left; /* Left-aligned text */
     padding-left: 40px; /* Add left padding for margin effect */
 }
 
