@@ -27,14 +27,14 @@ label {
 select {
     font-family: 'Fondamento', cursive;
     font-weight: 700;
-    background-color: #32CD32; /* Green background */
-    color: #800080; /* Purple text */
+    background-color: #411e50; /* Green background */
+    color:  #d4d2ec; /* Purple text */
     padding: 12px 16px; /* Increased padding */
     margin-top: 15px;
     cursor: pointer;
     width: 250px; /* Increased width */
     font-size: 1.3rem; /* Larger font size */
-    border: 2px solid #8e49a3;
+    border: 2px solid #32CD32;
     border-radius: 0; /* Remove rounded corners */
     appearance: none; /* Remove default browser styling */
     -webkit-appearance: none;
