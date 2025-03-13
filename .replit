@@ -11,7 +11,3 @@ run = ["sh", "-c", "npx serve -s ."]
 [[ports]]
 localPort = 3000
 externalPort = 80
-
-[[ports]]
-localPort = 39087
-externalPort = 3000
