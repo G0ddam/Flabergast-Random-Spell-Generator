@@ -10,7 +10,7 @@ select, .button {
     background-color: #32CD32; /* Green background */
     color: #800080; /* Purple text */
     padding: 8px 12px;
-    margin-top: 100px; /* Significantly increased top margin */
+    margin-top:30px; /* Significantly increased top margin */
     cursor: pointer;
     width: 200px; /* Ensure uniform width for select and button */
 }
