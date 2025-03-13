@@ -1,1 +1,1 @@
-# Flabergast-Random-Spell-Generator
+# Flabergast-Spell-Flipper
