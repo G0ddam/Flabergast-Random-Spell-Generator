@@ -108,7 +108,8 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 40px; /* Add left padding for margin effect */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Ensure text is centered */
 }
 
 /* Adjust the hexagon shape for the larger output box */
