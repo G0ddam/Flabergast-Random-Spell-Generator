@@ -27,6 +27,11 @@ select, .button {
     margin: 100px auto; /* Increased margin to space out elements */
 }
 
+.button {
+    font-size: 1.5rem; /* Increase the text size for the button */
+    font-weight: bold; /* Make the text bold for better visibility */
+}
+
 .hexagon:before, .hexagon:after, .button:before, .button:after, .output:before, .output:after {
     content: "";
     position: absolute;
