@@ -9,11 +9,9 @@ body {
 select, .button {
     background-color: #32CD32; /* Green background */
     color: #800080; /* Purple text */
-    border: 2px solid #d4d2ec; /* Soft purple border */
     padding: 8px 12px;
     margin-top: 100px; /* Significantly increased top margin */
     cursor: pointer;
-    border-radius: 12px; /* Smoothed corners for aesthetics */
     width: 200px; /* Ensure uniform width for select and button */
 }
 
@@ -51,7 +49,6 @@ select, .button {
     background-color: #411e50;
     border: 2px solid #8e49a3;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     overflow: hidden; /* Keeps content within hexagonal boundaries */
     margin: 100px auto 60px; /* Increased bottom margin for clearer separation */
 }
