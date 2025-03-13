@@ -102,7 +102,7 @@ select {
 /* Adjust the hexagon shape for the larger output box */
 #spellOutput h2 {
     font-size: 1.8rem;
-    margin-bottom: 10px;
+    margin-bottom: -15px;
 }
 
 #spellOutput p {
