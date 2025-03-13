@@ -110,6 +110,14 @@ select {
     justify-content: center;
     align-items: center; /* Center horizontally */
     text-align: center; /* Ensure text is centered */
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Completely hide it */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition */
+}
+
+#spellOutput.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Adjust the hexagon shape for the larger output box */

@@ -215,6 +215,10 @@ function generateSpell() {
 
     document.getElementById("spellName").textContent = randomSpell.Name;
     document.getElementById("spellEffect").textContent = randomSpell.Effect;
+    
+    // Make the spell output visible
+    const spellOutput = document.getElementById("spellOutput");
+    spellOutput.classList.add("visible");
 }
 
 document.addEventListener('DOMContentLoaded', () => {
