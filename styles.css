@@ -99,7 +99,7 @@ select {
 
 #spellOutput {
     background-color: #411e50;
-    border: 2px solid #8e49a3;
+    border: 2px solid #32CD32;
     padding: 20px;
     overflow: hidden; /* Keeps content within hexagonal boundaries */
     margin: 100px auto 60px; /* Increased bottom margin for clearer separation */
