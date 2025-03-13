@@ -100,6 +100,15 @@ select {
 }
 
 /* Adjust the hexagon shape for the larger output box */
+#spellOutput h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+#spellOutput p {
+    font-size: 1.4rem;
+}
+
 #spellOutput:before, #spellOutput:after {
     border-left: 150px solid transparent; /* Adjust to match new width */
     border-right: 150px solid transparent;
