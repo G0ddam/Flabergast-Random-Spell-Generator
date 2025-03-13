@@ -1,8 +1,9 @@
+
 modules = ["nodejs-20", "web"]
-run = "Run App"
+run = "npx serve -s ."
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "Run App"]
+run = ["sh", "-c", "npx serve -s ."]
