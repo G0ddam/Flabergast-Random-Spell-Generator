@@ -196,20 +196,12 @@ const spells = {
     ]
 };
 
-function log(message) {
-    const consoleDiv = document.getElementById('consoleLog');
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    consoleDiv.appendChild(messageElement);
-}
-
 function generateSpell() {
     const level = document.getElementById("spellLevel").value;
-    log("Selected level: " + level);
 
     const spellList = spells[level];
     if (!spellList) {
-        log("No spells found for level: " + level);
+        console.error("No spells found for level: " + level);
         return;
     }
 
@@ -217,13 +209,12 @@ function generateSpell() {
     const randomSpell = spellList[randomIndex];
 
     if (!randomSpell) {
-        log("Failed to select a random spell from the list.");
+        console.error("Failed to select a random spell from the list.");
         return;
     }
 
     document.getElementById("spellName").textContent = randomSpell.Name;
     document.getElementById("spellEffect").textContent = randomSpell.Effect;
-    log("Generated spell: " + randomSpell.Name + " - " + randomSpell.Effect);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -231,6 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (button) {
         button.addEventListener('click', generateSpell);
     } else {
-        log("Generate button not found.");
+        console.error("Generate button not found.");
     }
 });
