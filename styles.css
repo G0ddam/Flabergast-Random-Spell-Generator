@@ -56,4 +56,25 @@ select, .button {
     padding: 20px;
     overflow: hidden; /* Keeps content within hexagonal boundaries */
     margin: 100px auto 60px; /* Increased bottom margin for clearer separation */
+    width: 300px; /* Increased width to accommodate more text */
+    height: 180px; /* Increased height for more content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left; /* Left-aligned text */
+    padding-left: 40px; /* Add left padding for margin effect */
+}
+
+/* Adjust the hexagon shape for the larger output box */
+#spellOutput:before, #spellOutput:after {
+    border-left: 150px solid transparent; /* Adjust to match new width */
+    border-right: 150px solid transparent;
+}
+
+#spellOutput:before {
+    border-bottom: 90px solid #411e50; /* Adjust to match new height */
+}
+
+#spellOutput:after {
+    border-top: 90px solid #411e50;
 }
