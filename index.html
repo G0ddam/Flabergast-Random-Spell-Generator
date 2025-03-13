@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flabergast Spell Spinner</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .hexagon {
+            width: 100px;
+            height: 55px;
+            background-color: #32CD32; /* Green background */
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .hexagon:before, .hexagon:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+        }
+
+        .hexagon:before {
+            bottom: 100%;
+            border-bottom: 28px solid #32CD32; /* Green background */
+        }
+
+        .hexagon:after {
+            top: 100%;
+            width: 0;
+            border-top: 28px solid #32CD32; /* Green background */
+        }
+
+        select, button {
+            background-color: #32CD32; /* Green background */
+            color: #800080; /* Purple text */
+            border: 2px solid #d4d2ec; /* Soft purple border */
+            padding: 8px 12px;
+            margin-top: 10px;
+            cursor: pointer; /* Adds a pointer cursor on hover */
+            border-radius: 12px; /* Beveled corners */
+        }
+    </style>
 </head>
 <body>
     <h1>Flabergast Spell Spinner</h1>
