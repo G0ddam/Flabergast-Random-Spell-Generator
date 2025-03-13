@@ -7,52 +7,51 @@ body {
 }
 
 select, .button {
-    background-color: #32CD32;
-    color: #800080;
-    border: 2px solid #d4d2ec;
+    background-color: #32CD32; /* Green background */
+    color: #800080; /* Purple text */
+    border: 2px solid #d4d2ec; /* Soft purple border */
     padding: 8px 12px;
-    margin-top: 10px;
+    margin-top: 20px; /* Increased spacing to avoid cramping */
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 12px; /* Smoothed corners for aesthetics */
+    width: 200px; /* Ensure uniform width for select and button */
 }
 
-.hexagon, .button, .output {
-    position: relative;
+.button, .output {
+    width: 220px; /* Slightly wider to accommodate content */
+    height: 127px; /* Adjusted for proper hexagonal appearance */
+    background-color: #32CD32;
+    margin: 20px auto; /* Ensure uniform margin */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 20px auto;
-}
-
-.button, .output {
-    width: 200px; /* Larger width to accommodate more content */
-    height: 115px; /* Adjust height to maintain hexagonal shape */
-    background-color: #32CD32;
+    position: relative;
 }
 
 .hexagon:before, .hexagon:after, .button:before, .button:after, .output:before, .output:after {
     content: "";
     position: absolute;
     width: 0;
-    border-left: 100px solid transparent; /* Adjust to half of the width */
-    border-right: 100px solid transparent; /* Adjust to half of the width */
+    border-left: 110px solid transparent; /* Adjust to fit new width */
+    border-right: 110px solid transparent;
 }
 
 .hexagon:before, .button:before, .output:before {
     bottom: 100%;
-    border-bottom: 57.5px solid #32CD32; /* Adjust color and height to fit the new size */
+    border-bottom: 63.5px solid #32CD32; /* Adjust to fit new height */
 }
 
 .hexagon:after, .button:after, .output:after {
     top: 100%;
-    border-top: 57.5px solid #32CD32; /* Adjust color and height to fit the new size */
+    border-top: 63.5px solid #32CD32;
 }
 
 #spellOutput {
     background-color: #411e50;
     border: 2px solid #8e49a3;
-    padding: 20px; /* Increased padding for better text fitting */
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    overflow: hidden; /* Keeps the content within the hexagonal boundaries */
+    overflow: hidden; /* Critical for maintaining hexagonal boundary */
+    margin-bottom: 30px; /* Added bottom margin for clearer separation */
 }
