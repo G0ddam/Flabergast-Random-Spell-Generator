@@ -1,18 +1,31 @@
 body {
-    font-family: 'Garamond', serif;
+    font-family: 'MedievalSharp', cursive;
     background-color: #290d45;
     color: #d4d2ec;
     padding: 20px;
     text-align: center;
 }
 
+h1 {
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-family: 'Uncial Antiqua', cursive;
+}
+
 select, .button {
+    font-family: 'MedievalSharp', cursive;
     background-color: #32CD32; /* Green background */
     color: #800080; /* Purple text */
     padding: 8px 12px;
     margin-top:30px; /* Significantly increased top margin */
     cursor: pointer;
     width: 200px; /* Ensure uniform width for select and button */
+    font-weight: bold;
 }
 
 .button, .output {
