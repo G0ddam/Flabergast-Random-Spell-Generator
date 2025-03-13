@@ -1,31 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('button').addEventListener('click', generateSpell);
-});
-
-function log(message) {
-    const consoleDiv = document.getElementById('consoleLog');
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    consoleDiv.appendChild(messageElement);
-}
-
-function generateSpell() {
-    const level = document.getElementById("spellLevel").value.trim();
-    log("Selected level: " + level);
-
-    const spellList = spells[level];
-    if (spellList && spellList.length > 0) {
-        const randomIndex = Math.floor(Math.random() * spellList.length);
-        const randomSpell = spellList[randomIndex];
-
-        document.getElementById("spellName").textContent = randomSpell.Name;
-        document.getElementById("spellEffect").textContent = randomSpell.Effect;
-        log("Spell: " + randomSpell.Name + " - " + randomSpell.Effect);
-    } else {
-        log("No spells available for the selected level or incorrect level value: " + level);
-    }
-}
-
 const spells = {
     "1": [
         {"Name": "Giggling Ghosts", "Effect": "Causes spectral laughter that distracts foes."},
@@ -199,7 +171,7 @@ const spells = {
         {"Name": "Root Beer Riptide", "Effect": "Unleashes a riptide of root beer that sweeps enemies away."},
         {"Name": "Strawberry Storm", "Effect": "A storm of strawberries bombards the area, causing sweet chaos."},
         {"Name": "Tapioca Tornado", "Effect": "Spins a tornado of tapioca pearls that trap and disorient foes."}
-    ]
+    ],
     "9": [
         {"Name": "Whimsical Warp", "Effect": "Teleports the target to a random party."},
         {"Name": "Gravity Guffaw", "Effect": "Inverts gravity for one minute, causing hilarity."},
@@ -223,3 +195,42 @@ const spells = {
         {"Name": "Goofy Gloom", "Effect": "Even shadows start acting silly."}
     ]
 };
+
+function log(message) {
+    const consoleDiv = document.getElementById('consoleLog');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    consoleDiv.appendChild(messageElement);
+}
+
+function generateSpell() {
+    const level = document.getElementById("spellLevel").value;
+    log("Selected level: " + level);
+
+    const spellList = spells[level];
+    if (!spellList) {
+        log("No spells found for level: " + level);
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * spellList.length);
+    const randomSpell = spellList[randomIndex];
+
+    if (!randomSpell) {
+        log("Failed to select a random spell from the list.");
+        return;
+    }
+
+    document.getElementById("spellName").textContent = randomSpell.Name;
+    document.getElementById("spellEffect").textContent = randomSpell.Effect;
+    log("Generated spell: " + randomSpell.Name + " - " + randomSpell.Effect);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('button');
+    if (button) {
+        button.addEventListener('click', generateSpell);
+    } else {
+        log("Generate button not found.");
+    }
+});
