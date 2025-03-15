@@ -3,30 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flabergast Spell Spinner</title>
+    <title>Chaos Magic Spell Spinner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Fondamento&family=Uncial+Antiqua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <h1>Flabergast Spell Spinner</h1>
-    <select id="spellLevel">
-        <option value="1">Spell Level 1</option>
-        <option value="2">Spell Level 2</option>
-        <option value="3">Spell Level 3</option>
-        <option value="4">Spell Level 4</option>
-        <option value="5">Spell Level 5</option>
-        <option value="6">Spell Level 6</option>
-        <option value="7">Spell Level 7</option>
-        <option value="8">Spell Level 8</option>
-        <option value="9">Spell Level 9</option>
-    </select>
-    <button class="hexagon button">Flabergast!</button>
-    <div id="spellOutput" class="hexagon output">
-        <h2><span id="spellName"></span></h2>
-        <p><span id="spellEffect"></span></p>
+    <nav>
+        <button id="spinnerPageBtn" class="nav-button active">Spell Spinner</button>
+        <button id="listPageBtn" class="nav-button">Spell List</button>
+    </nav>
+    
+    <div id="spinnerPage" class="page active">
+        <h1>Chaos Magic Spell Spinner</h1>
+        <select id="spellLevel">
+            <option value="Cantrip">Cantrip</option>
+            <option value="1st">1st Level</option>
+            <option value="2nd">2nd Level</option>
+            <option value="3rd">3rd Level</option>
+            <option value="4th">4th Level</option>
+            <option value="5th">5th Level</option>
+            <option value="6th">6th Level</option>
+            <option value="7th">7th Level</option>
+            <option value="8th">8th Level</option>
+            <option value="9th">9th Level</option>
+        </select>
+        <button class="hexagon button">Flabbergast!</button>
+        <div id="spellOutput" class="hexagon output">
+            <h2><span id="spellName"></span></h2>
+            <div class="spell-metadata">
+                <p><strong>Casting Time:</strong> <span id="spellCastingTime"></span></p>
+                <p><strong>Concentration:</strong> <span id="spellConcentration"></span></p>
+                <p><strong>Range:</strong> <span id="spellRange"></span></p>
+                <p><strong>Duration:</strong> <span id="spellDuration"></span></p>
+                <p><strong>Components:</strong> <span id="spellComponents"></span></p>
+            </div>
+            <div class="spell-description">
+                <h3>Description</h3>
+                <p><span id="spellDescription"></span></p>
+            </div>
+        </div>
     </div>
+    
+    <div id="listPage" class="page">
+        <h1>Chaos Magic Spell List</h1>
+        <div class="filter-controls">
+            <input type="text" id="spellSearch" placeholder="Search spells by name..." class="search-input">
+            <div class="filter-categories">
+                <div class="filter-category">
+                    <div class="category-header">
+                        <h3>Casting Time</h3>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="filter-toggles collapsed">
+                        <label><input type="checkbox" data-filter="castingTime" value="Action"> Action</label>
+                        <label><input type="checkbox" data-filter="castingTime" value="Bonus Action"> Bonus Action</label>
+                        <label><input type="checkbox" data-filter="castingTime" value="Reaction"> Reaction</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <select id="spellLevelList">
+            <option value="Cantrip">Cantrip</option>
+            <option value="1st">1st Level</option>
+            <option value="2nd">2nd Level</option>
+            <option value="3rd">3rd Level</option>
+            <option value="4th">4th Level</option>
+            <option value="5th">5th Level</option>
+            <option value="6th">6th Level</option>
+            <option value="7th">7th Level</option>
+            <option value="8th">8th Level</option>
+            <option value="9th">9th Level</option>
+        </select>
+        <div id="spellList"></div>
+    </div>
+    
     <script src="script.js"></script>
+
+    <footer>
+        <div style="text-align: center; padding: 20px;">
+            <p>© <span id="year">2025</span> Only Wizards Inc. All rights reserved.</p>
+            <p>
+                <a href="mailto:contact@onlywizardsinc.com" style="color: #32CD32; text-decoration: none;">
+                    Email: contact@onlywizards.com
+                </a>
+            </p>
+            <p>
+                <a href="https://rss.com/podcasts/owdcast/" target="_blank" style="color: #32CD32; text-decoration: none;">
+                    Listen to Our Podcast
+                </a>
+            </p>
+        </div>
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </footer>
 </body>
 </html>
