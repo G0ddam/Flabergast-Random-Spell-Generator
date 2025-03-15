@@ -28,4 +28,45 @@ nav {
 
 .page {
     display: none;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page.active {
+    display: block;
+}
+
+.spell-card {
+    background: rgba(50, 25, 75, 0.3);
+    border: 1px solid #32CD32;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+#spellOutput {
+    display: none;
+    background: rgba(50, 25, 75, 0.3);
+    border: 1px solid #32CD32;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+#spellOutput.visible {
+    display: block;
+}
+
+.filter-controls {
+    margin: 20px 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(50, 25, 75, 0.3);
+    border: 1px solid #32CD32;
+    color: #d4d2ec;
 }
