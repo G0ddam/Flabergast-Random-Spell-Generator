@@ -28,45 +28,319 @@ nav {
 
 .page {
     display: none;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .page.active {
     display: block;
 }
 
-.spell-card {
-    background: rgba(50, 25, 75, 0.3);
-    border: 1px solid #32CD32;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-}
-
-#spellOutput {
-    display: none;
-    background: rgba(50, 25, 75, 0.3);
-    border: 1px solid #32CD32;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
-}
-
-#spellOutput.visible {
-    display: block;
-}
-
 .filter-controls {
-    margin: 20px 0;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
 }
 
 .search-input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background: rgba(50, 25, 75, 0.3);
-    border: 1px solid #32CD32;
+    padding: 12px;
+    margin-bottom: 15px;
+    background-color: #411e50;
+    border: 2px solid #32CD32;
     color: #d4d2ec;
+    font-family: 'Fondamento', cursive;
+    font-size: 1.1rem;
+}
+
+.filter-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-category {
+    background-color: #411e50;
+    border: 1px solid #32CD32;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 200px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.category-header h3 {
+    color: #32CD32;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.toggle-arrow {
+    color: #32CD32;
+    transition: transform 0.3s ease;
+}
+
+.toggle-arrow.rotated {
+    transform: rotate(-90deg);
+}
+
+.filter-category {
+    position: relative;
+}
+
+.filter-toggles {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #411e50;
+    border: 1px solid #32CD32;
+    border-top: none;
+    padding: 10px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    opacity: 1;
+    visibility: visible;
+    border-radius: 0 0 8px 8px;
+}
+
+.filter-toggles.collapsed {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.filter-toggles label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.filter-toggles input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#spellList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.spell-card {
+    background-color: #411e50;
+    border: 2px solid #32CD32;
+    padding: 20px;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    text-align: left;
+    overflow: visible; /* Prevent content from being hidden */
+    min-height: auto; /* Allow box to expand */
+}
+
+h1 {
+    font-family: 'Fondamento', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-family: 'Fondamento', cursive;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 25px; /* Adds space below the spell name */
+    text-align: center;
+}
+
+label {
+    font-size: 1.5rem; /* Larger font size for the select level text */
+    display: block;
+    margin-top: 20px;
+}
+
+select {
+    font-family: 'Fondamento', cursive;
+    font-weight: 700;
+    background-color: #411e50; /* Green background */
+    color:  #d4d2ec; /* Purple text */
+    padding: 12px 16px; /* Increased padding */
+    margin-top: 15px;
+    cursor: pointer;
+    width: 250px; /* Increased width */
+    font-size: 1.3rem; /* Larger font size */
+    border: 2px solid #32CD32;
+    border-radius: 0; /* Remove rounded corners */
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none; /* Remove any shadow effects */
+    background-image: none; /* Remove any gradients */
+}
+
+/* Add a custom dropdown arrow */
+select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23d4d2ec' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.button {
+    font-size: 1.8rem; /* Slightly reduce font size to fit */
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 220px; /* Keep proportions */
+    height: 250px; /* Increased height to prevent clipping */
+    background-color: #32CD32;
+    color: #800080; /* Purple text */
+    border: none;
+    cursor: pointer;
+    font-family: 'Fondamento', cursive;
+    margin: 50px auto; /* Preserve original margin */
+    line-height: 1.2; /* Reduce line height to avoid overflow */
+    padding: 10px 15px; /* Add padding to prevent text overflow */
+    box-sizing: border-box; /* Ensures padding doesn’t change dimensions */
+
+    /* Keep the Correct Hexagonal Shape */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+
+    /* Add Shadow and Smooth Transition */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Fix: Keep Hexagonal Shape During Hover */
+.button:hover {
+    background-color: #3be03b;
+    box-shadow: 0px 6px 15px rgba(50, 205, 50, 0.7);
+    transform: scale(1.05);
+}
+
+/* Click Effect: Press Down */
+.button:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 8px rgba(50, 205, 50, 0.5);
+}
+
+/* Fix: Keep Hexagonal Shape During Hover */
+.button:hover {
+    background-color: #3be03b;
+    box-shadow: 0px 6px 15px rgba(50, 205, 50, 0.7);
+    transform: scale(1.05);
+}
+
+/* Click Effect: Press Down */
+.button:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 8px rgba(50, 205, 50, 0.5);
+}
+
+#spellOutput {
+    background-color: #411e50;
+    border: 2px solid #32CD32;
+    padding: 0px 20px 30px; /*adds internal padding for proper spacing*/
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /*centers all content inside*/
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    overflow-y: auto;
+    overflow: visible; /* ensures no content is clipped */
+    position: relative; /* Prevents overlapping */
+    min-height: auto; /* Allow box to expand */
+    border-radius: 10px;
+}
+
+/* Fixes overlapping purple hexagon */
+#spellOutput::before, #spellOutput::after {
+    display: none; /* Hide unwanted hexagon artifacts */
+}
+
+#spellOutput.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Adjust the hexagon shape for the larger output box */
+#spellOutput h2 {
+    font-size: 1.8rem;
+    margin-bottom: -15px;
+    color: #32CD32;
+}
+
+#spellOutput p {
+    font-size: 1.4rem;
+}
+
+#spellOutput:before, #spellOutput:after {
+    border-left: 150px solid transparent; /* Adjust to match new width */
+    border-right: 150px solid transparent;
+}
+
+#spellOutput:before {
+    border-bottom: 90px solid #411e50; /* Adjust to match new height */
+}
+
+#spellOutput:after {
+    border-top: 90px solid #411e50;
+}
+
+.output {
+    display: none;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    text-align: left;
+}
+
+.spell-metadata {
+    display: grid;
+    grid-template-columns: 270px 270px; /* First column for labels, second for values */
+    column-gap: 100px; /* Adds space between columns */
+    row-gap: 10px; /* Adds space between rows */
+    justify-content: center; /* Ensures content is centered */
+    align-items: start;
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+    margin: 25px auto 10px; /* Centers the metadata under the button */
+}
+
+.spell-metadata p {
+    margin: 5px 0;
+}
+
+.spell-description {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.spell-description h3 {
+    margin-top: 0;
+    color: #32CD32;
 }
