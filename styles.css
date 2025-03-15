@@ -148,8 +148,24 @@ nav {
     max-width: 800px;
     border-radius: 10px;
     text-align: left;
-    overflow: visible; /* Prevent content from being hidden */
-    min-height: auto; /* Allow box to expand */
+    overflow: hidden;
+    min-height: auto;
+    word-wrap: break-word;
+}
+
+.spell-card .spell-metadata {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.spell-card .spell-description {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    word-break: break-word;
 }
 
 h1 {
