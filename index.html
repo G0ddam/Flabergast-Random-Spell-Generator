@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Flabbergast is a playful chaos magic spell spinner and searchable spell library for tabletop fantasy games.">
+    <meta name="description" content="Flabbergast is a chaos magic spell spinner and searchable spell library for tabletop fantasy games.">
     <title>Flabbergast | Chaos Magic Spell Spinner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,137 +11,134 @@
 <body>
     <a class="skip-link" href="#mainContent">Skip to spells</a>
 
-    <div class="app-shell">
-        <header class="app-header">
-            <div class="brand-lockup" aria-label="Flabbergast Chaos Magic Spell Spinner">
-                <img src="attached_assets/dragon dice neon.png" alt="" class="brand-orb">
-                <div class="brand-copy">
-                    <img src="attached_assets/flabbergast!!.png" alt="Flabbergast" class="flabbergast-logo">
-                    <h1>Chaos Magic Spell Spinner</h1>
-                </div>
-            </div>
+    <div class="arcane-shell">
+        <header class="topbar">
+            <a class="brand-lockup" href="#spinnerPage" aria-label="Flabbergast home">
+                <img src="attached_assets/ui/generated/dragon-emblem.png" alt="" class="brand-emblem">
+                <span class="brand-text">
+                    <span class="brand-title">Flabbergast</span>
+                    <span class="brand-subtitle">Chaos Magic Spell Spinner</span>
+                </span>
+            </a>
 
-            <nav class="mode-tabs" aria-label="Primary views">
+            <nav class="mode-tabs" aria-label="Primary sections">
                 <button id="spinnerPageBtn" class="mode-tab active" type="button" data-page-target="spinnerPage" aria-pressed="true">
-                    <span class="tab-icon" aria-hidden="true">✦</span>
+                    <span class="tab-icon" aria-hidden="true">✥</span>
                     Spell Spinner
                 </button>
                 <button id="listPageBtn" class="mode-tab" type="button" data-page-target="listPage" aria-pressed="false">
-                    <span class="tab-icon" aria-hidden="true">☰</span>
+                    <span class="tab-icon" aria-hidden="true">▤</span>
                     Spell List
                 </button>
             </nav>
 
-            <div class="header-actions" aria-label="Library stats">
-                <span><strong id="spellTotal">0</strong> spells</span>
-                <span><strong id="favoriteCount">0</strong> favorites</span>
+            <div class="utility-actions" aria-label="Spellbook tools">
+                <button id="favoritesShortcut" type="button">
+                    <span aria-hidden="true">☆</span>
+                    Favorites
+                    <strong id="favoriteCount">0</strong>
+                </button>
+                <button id="recentShortcut" type="button">
+                    <span aria-hidden="true">↺</span>
+                    Recent Rolls
+                </button>
+                <button id="settingsShortcut" type="button">
+                    <span aria-hidden="true">⚙</span>
+                    Settings
+                </button>
             </div>
         </header>
 
         <main id="mainContent">
-            <section id="spinnerPage" class="page active" aria-labelledby="spinnerHeading">
-                <div class="spinner-grid">
-                    <section class="panel conjurer-panel" aria-labelledby="spinnerHeading">
-                        <div class="panel-heading">
-                            <div>
-                                <h2 id="spinnerHeading">Choose the chaos</h2>
-                                <p>Level and timing shape the surge.</p>
-                            </div>
-                            <span class="panel-mark" aria-hidden="true">d20</span>
+            <section id="spinnerPage" class="top-deck" aria-label="Spell spinner">
+                <section class="parchment-panel conjurer-panel" aria-labelledby="spinnerHeading">
+                    <div class="control-stack">
+                        <div class="control-group">
+                            <div class="control-label">Spell Level</div>
+                            <div id="spellLevelButtons" class="level-tabs" role="group" aria-label="Spell Level"></div>
                         </div>
 
-                        <div class="control-stack">
-                            <div class="control-group">
-                                <div class="control-label">Spell Level</div>
-                                <div id="spellLevelButtons" class="segmented-grid" role="group" aria-label="Spell Level"></div>
-                            </div>
-
-                            <div class="control-group">
-                                <div class="control-label">Casting Time</div>
-                                <div id="rollCastingButtons" class="segmented-row" role="group" aria-label="Casting Time"></div>
-                            </div>
+                        <div class="control-group">
+                            <div class="control-label">Casting Time</div>
+                            <div id="rollCastingButtons" class="casting-tabs" role="group" aria-label="Casting Time"></div>
                         </div>
-
-                        <button id="randomSpellBtn" class="summon-button" type="button">
-                            <span class="summon-art" aria-hidden="true">
-                                <img src="attached_assets/dragon dice flabbergast.png" alt="">
-                            </span>
-                            <span class="summon-copy">
-                                <strong>Flabbergast!</strong>
-                                <small>Conjure a random spell</small>
-                            </span>
-                        </button>
-
-                        <div id="rollMessage" class="status-line" role="status" aria-live="polite">Spell data is gathering sparks...</div>
-                    </section>
-
-                    <section id="spellOutput" class="panel spell-result" aria-live="polite" aria-labelledby="spellName">
-                        <div class="result-empty">
-                            <span class="empty-rune" aria-hidden="true">✧</span>
-                            <h2 id="spellName">Ready when you are</h2>
-                            <p>No spell has answered yet.</p>
-                        </div>
-                    </section>
-                </div>
-
-                <section class="panel recent-panel" aria-labelledby="recentHeading">
-                    <div class="panel-heading compact">
-                        <div>
-                            <h2 id="recentHeading">Recently conjured</h2>
-                            <p>Fresh trouble from this table.</p>
-                        </div>
-                        <button id="clearRecentBtn" class="ghost-button" type="button">Clear</button>
                     </div>
-                    <div id="recentRolls" class="recent-rolls" aria-live="polite"></div>
+
+                    <button id="randomSpellBtn" class="summon-banner" type="button">
+                        <span class="summon-note">Let chaos decide your fate.<br>Click the dragon's die to<br>conjure a random spell!</span>
+                        <span class="summon-seal" aria-hidden="true">
+                            <img src="attached_assets/ui/generated/dragon-die-seal.png" alt="">
+                        </span>
+                        <span class="summon-copy">
+                            <strong id="spinnerHeading">Flabbergast!</strong>
+                            <small>Conjure a random spell</small>
+                        </span>
+                    </button>
+
+                    <div id="rollMessage" class="status-line" role="status" aria-live="polite">Spell data is gathering sparks...</div>
+                </section>
+
+                <section id="spellOutput" class="parchment-panel result-panel" aria-live="polite" aria-labelledby="spellName">
+                    <div class="result-ribbon">Recently conjured</div>
+                    <img src="attached_assets/ui/generated/wax-seal.png" alt="" class="wax-seal">
+                    <div class="result-empty">
+                        <span class="empty-rune" aria-hidden="true">✧</span>
+                        <h2 id="spellName">Ready when you are</h2>
+                        <p>No spell has answered yet.</p>
+                    </div>
                 </section>
             </section>
 
-            <section id="listPage" class="page" aria-labelledby="listHeading">
-                <section class="panel library-panel">
-                    <div class="library-header">
-                        <div>
-                            <h2 id="listHeading">Spell List</h2>
-                            <p>A sharper shelf for every strange incantation.</p>
-                        </div>
-                        <button id="clearFiltersBtn" class="ghost-button" type="button">Reset filters</button>
+            <section id="recentPanel" class="recent-strip" aria-labelledby="recentHeading">
+                <div>
+                    <h2 id="recentHeading">Recently conjured</h2>
+                    <p>Fresh trouble from this table.</p>
+                </div>
+                <div id="recentRolls" class="recent-rolls" aria-live="polite"></div>
+                <button id="clearRecentBtn" class="plain-link" type="button">Clear</button>
+            </section>
+
+            <section id="listPage" class="library-desk" aria-labelledby="listHeading">
+                <aside class="filter-rail" aria-label="Spell filters">
+                    <label class="search-box" for="spellSearch">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search" id="spellSearch" placeholder="Search spells" autocomplete="off">
+                    </label>
+
+                    <h2>Filters</h2>
+
+                    <div class="filter-group">
+                        <h3>Spell Level</h3>
+                        <div id="levelFilters" class="checkbox-stack"></div>
                     </div>
 
+                    <button id="showAllLevelsBtn" class="plain-link" type="button">Show more⌄</button>
+
+                    <div class="filter-group">
+                        <h3>Casting Time</h3>
+                        <div id="castingFilters" class="checkbox-stack"></div>
+                    </div>
+                </aside>
+
+                <section class="library-panel" aria-labelledby="listHeading">
                     <div class="library-toolbar">
-                        <label class="search-control" for="spellSearch">
-                            <span aria-hidden="true">⌕</span>
-                            <input type="search" id="spellSearch" placeholder="Search spells" autocomplete="off">
-                        </label>
-
-                        <label class="select-control" for="spellLevelList">
-                            <span>Spell Level</span>
-                            <select id="spellLevelList"></select>
-                        </label>
-
-                        <label class="select-control" for="sortSpells">
-                            <span>Sort by</span>
+                        <p id="listCount">No spells loaded yet.</p>
+                        <div class="sort-tools">
+                            <label for="sortSpells">Sort by</label>
                             <select id="sortSpells">
-                                <option value="level">Level</option>
+                                <option value="level">Level (Low to High)</option>
                                 <option value="name">Name</option>
                                 <option value="casting">Casting Time</option>
                                 <option value="duration">Duration</option>
                             </select>
-                        </label>
+                            <button class="view-toggle active" type="button" aria-label="List view">☰</button>
+                            <button class="view-toggle" type="button" aria-label="Grid view">▦</button>
+                        </div>
                     </div>
 
-                    <div class="filter-row" aria-label="Casting Time">
-                        <div class="control-label">Casting Time</div>
-                        <div id="listCastingButtons" class="segmented-row"></div>
-                        <label class="favorite-filter">
-                            <input id="favoritesOnly" type="checkbox">
-                            Favorites only
-                        </label>
-                    </div>
-
-                    <div class="list-status">
-                        <span id="listCount">No spells loaded yet.</span>
-                    </div>
-
+                    <h2 id="listHeading" class="visually-hidden">Spell List</h2>
                     <div id="spellList" class="spell-list" aria-live="polite"></div>
+                    <button id="loadMoreBtn" class="load-more" type="button">Load More Spells⌄</button>
                 </section>
             </section>
         </main>

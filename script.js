@@ -1,20 +1,30 @@
 const LEVELS = ['Cantrip', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th'];
-const CASTING_FILTERS = ['Any', 'Action', 'Bonus Action', 'Reaction'];
+const CASTING_FILTERS = ['Action', 'Bonus Action', 'Reaction'];
+const ROLL_CASTING_FILTERS = ['Any', ...CASTING_FILTERS];
+const INITIAL_LEVEL_FILTERS = ['Cantrip', '1st', '2nd'];
 const STORAGE_KEYS = {
     favorites: 'flabbergast:favorites',
     recent: 'flabbergast:recent-rolls'
 };
+const ICONS = {
+    chaos: 'attached_assets/ui/generated/spell-vines.png',
+    vines: 'attached_assets/ui/generated/spell-vines.png',
+    lightning: 'attached_assets/ui/generated/spell-lightning.png',
+    shield: 'attached_assets/ui/generated/spell-shield.png',
+    fire: 'attached_assets/ui/generated/spell-fire.png',
+    healing: 'attached_assets/ui/generated/spell-healing.png'
+};
 
 let spellData = [];
 let state = {
-    page: 'spinnerPage',
-    rollLevel: 'Cantrip',
+    rollLevel: '1st',
     rollCasting: 'Any',
-    listLevel: 'All',
-    listCasting: 'Any',
+    levelFilters: new Set(INITIAL_LEVEL_FILTERS),
+    castingFilters: new Set(CASTING_FILTERS),
     listSort: 'level',
     searchTerm: '',
     favoritesOnly: false,
+    visibleLimit: 25,
     favorites: new Set(loadStoredList(STORAGE_KEYS.favorites)),
     recent: loadStoredList(STORAGE_KEYS.recent),
     activeSpellId: null
@@ -23,8 +33,8 @@ let state = {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
     bindNavigation();
-    bindLibraryControls();
-    renderStaticControls();
+    bindControls();
+    renderControls();
     renderFavoritesCount();
     renderRecentRolls();
     loadSpells();
@@ -34,26 +44,36 @@ function bindNavigation() {
     document.querySelectorAll('[data-page-target]').forEach((button) => {
         button.addEventListener('click', () => switchPage(button.dataset.pageTarget));
     });
+    document.getElementById('favoritesShortcut').addEventListener('click', () => {
+        state.favoritesOnly = !state.favoritesOnly;
+        state.visibleLimit = 25;
+        document.getElementById('favoritesShortcut').classList.toggle('active', state.favoritesOnly);
+        displaySpellList();
+        switchPage('listPage');
+    });
+    document.getElementById('recentShortcut').addEventListener('click', () => {
+        document.getElementById('recentPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    document.getElementById('settingsShortcut').addEventListener('click', () => {
+        document.body.classList.toggle('compact-rows');
+    });
 }
 
-function bindLibraryControls() {
+function bindControls() {
     document.getElementById('randomSpellBtn').addEventListener('click', generateSpell);
     document.getElementById('clearRecentBtn').addEventListener('click', clearRecentRolls);
-    document.getElementById('clearFiltersBtn').addEventListener('click', resetFilters);
-    document.getElementById('spellSearch').addEventListener('input', (event) => {
-        state.searchTerm = event.target.value.trim().toLowerCase();
+    document.getElementById('showAllLevelsBtn').addEventListener('click', toggleAllLevels);
+    document.getElementById('loadMoreBtn').addEventListener('click', () => {
+        state.visibleLimit += 25;
         displaySpellList();
     });
-    document.getElementById('spellLevelList').addEventListener('change', (event) => {
-        state.listLevel = event.target.value;
+    document.getElementById('spellSearch').addEventListener('input', (event) => {
+        state.searchTerm = event.target.value.trim().toLowerCase();
+        state.visibleLimit = 25;
         displaySpellList();
     });
     document.getElementById('sortSpells').addEventListener('change', (event) => {
         state.listSort = event.target.value;
-        displaySpellList();
-    });
-    document.getElementById('favoritesOnly').addEventListener('change', (event) => {
-        state.favoritesOnly = event.target.checked;
         displaySpellList();
     });
     document.getElementById('spellList').addEventListener('click', handleSpellListClick);
@@ -61,7 +81,7 @@ function bindLibraryControls() {
     document.getElementById('spellOutput').addEventListener('click', handleResultClick);
 }
 
-function renderStaticControls() {
+function renderControls() {
     renderButtonGroup({
         containerId: 'spellLevelButtons',
         options: LEVELS,
@@ -69,59 +89,78 @@ function renderStaticControls() {
         label: 'Spell Level',
         onSelect: (level) => {
             state.rollLevel = level;
-            renderStaticControls();
+            renderControls();
             updateRollMessage();
         }
     });
 
     renderButtonGroup({
         containerId: 'rollCastingButtons',
-        options: CASTING_FILTERS,
+        options: ROLL_CASTING_FILTERS,
         activeValue: state.rollCasting,
         label: 'Casting Time',
         onSelect: (castingTime) => {
             state.rollCasting = castingTime;
-            renderStaticControls();
+            renderControls();
             updateRollMessage();
         }
     });
 
-    renderButtonGroup({
-        containerId: 'listCastingButtons',
-        options: CASTING_FILTERS,
-        activeValue: state.listCasting,
-        label: 'Casting Time',
-        onSelect: (castingTime) => {
-            state.listCasting = castingTime;
-            renderStaticControls();
+    renderCheckboxGroup({
+        containerId: 'levelFilters',
+        options: LEVELS,
+        selectedValues: state.levelFilters,
+        onToggle: (level, checked) => {
+            toggleSetValue(state.levelFilters, level, checked);
+            ensureNonEmpty(state.levelFilters, level);
+            state.visibleLimit = 25;
+            renderControls();
             displaySpellList();
         }
     });
 
-    const levelSelect = document.getElementById('spellLevelList');
-    levelSelect.replaceChildren(
-        createElement('option', { value: 'All' }, 'All levels'),
-        ...LEVELS.map((level) => createElement('option', { value: level }, levelLabel(level)))
-    );
-    levelSelect.value = state.listLevel;
+    renderCheckboxGroup({
+        containerId: 'castingFilters',
+        options: CASTING_FILTERS,
+        selectedValues: state.castingFilters,
+        onToggle: (castingTime, checked) => {
+            toggleSetValue(state.castingFilters, castingTime, checked);
+            ensureNonEmpty(state.castingFilters, castingTime);
+            state.visibleLimit = 25;
+            renderControls();
+            displaySpellList();
+        }
+    });
 }
 
 function renderButtonGroup({ containerId, options, activeValue, label, onSelect }) {
     const container = document.getElementById(containerId);
     container.replaceChildren();
     options.forEach((option) => {
-        const button = createElement(
-            'button',
-            {
-                type: 'button',
-                class: option === activeValue ? 'segment active' : 'segment',
-                'aria-pressed': option === activeValue ? 'true' : 'false',
-                'aria-label': `${label}: ${option}`
-            },
-            option === 'Any' ? 'Any' : option
-        );
+        const button = createElement('button', {
+            type: 'button',
+            class: option === activeValue ? 'segment active' : 'segment',
+            'aria-pressed': option === activeValue ? 'true' : 'false',
+            'aria-label': `${label}: ${option}`
+        }, option);
         button.addEventListener('click', () => onSelect(option));
         container.append(button);
+    });
+}
+
+function renderCheckboxGroup({ containerId, options, selectedValues, onToggle }) {
+    const container = document.getElementById(containerId);
+    container.replaceChildren();
+    options.forEach((option) => {
+        const checkbox = createElement('input', {
+            type: 'checkbox',
+            value: option,
+            checked: selectedValues.has(option) ? '' : null
+        });
+        checkbox.checked = selectedValues.has(option);
+        checkbox.addEventListener('change', (event) => onToggle(option, event.target.checked));
+
+        container.append(createElement('label', { class: 'check-row' }, checkbox, createElement('span', {}, option)));
     });
 }
 
@@ -135,7 +174,6 @@ function loadSpells() {
         })
         .then((data) => {
             spellData = data.map(normalizeSpell);
-            document.getElementById('spellTotal').textContent = spellData.length.toString();
             state.recent = state.recent.filter((id) => getSpellById(id)).slice(0, 8);
             saveStoredList(STORAGE_KEYS.recent, state.recent);
             updateRollMessage();
@@ -152,19 +190,28 @@ function loadSpells() {
 function normalizeSpell(rawSpell, index) {
     const level = clean(rawSpell['Spell Level']) || 'Cantrip';
     const name = clean(rawSpell['Spell Name']) || 'Unknown Spell';
+    const description = clean(rawSpell.Description) || 'No description available.';
+    const base = clean(rawSpell['Base Spell']);
+    const castingTime = clean(rawSpell['Casting Time']) || 'Unlisted';
+    const duration = clean(rawSpell.Duration) || 'Unlisted';
+    const concentration = clean(rawSpell['Requires Concentration?']) || 'No';
+    const range = clean(rawSpell.Range) || rangeFallback(description);
+
     return {
         id: `${level}:${name}:${index}`,
         name,
-        base: clean(rawSpell['Base Spell']),
+        base,
         level,
         levelIndex: LEVELS.indexOf(level),
         components: clean(rawSpell.Components) || 'Unlisted',
-        castingTime: clean(rawSpell['Casting Time']) || 'Unlisted',
-        duration: clean(rawSpell.Duration) || 'Unlisted',
-        concentration: clean(rawSpell['Requires Concentration?']) || 'No',
-        range: clean(rawSpell.Range) || 'See description',
-        description: clean(rawSpell.Description) || 'No description available.',
-        rulesVersion: clean(rawSpell['Rules Version']) || '2024'
+        castingTime,
+        duration,
+        concentration,
+        range,
+        description,
+        rulesVersion: clean(rawSpell['Rules Version']) || '2024',
+        icon: chooseSpellIcon({ name, base, description }),
+        tags: buildTags({ name, base, description, castingTime, concentration })
     };
 }
 
@@ -210,38 +257,33 @@ function showSpell(spell, options = {}) {
 }
 
 function renderSpellResult(spell) {
-    const favoriteButton = createFavoriteButton(spell, 'result-favorite');
-    const heading = createElement('div', { class: 'result-title' },
-        createElement('div', {},
-            createElement('p', { class: 'spell-school' }, `${levelLabel(spell.level)} chaos magic`),
-            createElement('h2', { id: 'spellName' }, spell.name)
-        ),
-        favoriteButton
-    );
-
-    const description = createElement('div', { class: 'spell-description rich-text' });
-    splitDescription(spell.description).forEach((paragraph) => {
-        description.append(createElement('p', {}, paragraph));
-    });
-
-    const actions = createElement('div', { class: 'result-actions' },
-        createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'copy-active' }, 'Copy spell'),
-        createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'view-active' }, 'View in list'),
-        createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'roll-again' }, 'Roll again')
-    );
+    const description = splitDescription(spell.description)[0] || spell.description;
 
     document.getElementById('spellOutput').replaceChildren(
-        heading,
-        createElement('div', { class: 'spell-summary' },
-            createMetaItem('Casting Time', spell.castingTime),
-            createMetaItem('Range', spell.range),
-            createMetaItem('Duration', spell.duration),
-            createMetaItem('Components', spell.components),
-            createMetaItem('Concentration', spell.concentration),
-            createMetaItem('Base Spell', spell.base || 'Original chaos')
+        createElement('div', { class: 'result-ribbon' }, 'Recently conjured'),
+        createElement('img', { src: 'attached_assets/ui/generated/wax-seal.png', alt: '', class: 'wax-seal' }),
+        createElement('div', { class: 'result-body' },
+            createElement('img', { src: spell.icon, alt: '', class: 'result-icon' }),
+            createElement('div', { class: 'result-heading' },
+                createElement('h2', { id: 'spellName' }, spell.name),
+                createElement('p', { class: 'spell-school' }, `${levelLabel(spell.level)} chaos magic`),
+                renderTagRow(spell.tags)
+            )
         ),
-        description,
-        actions
+        createElement('div', { class: 'result-description' },
+            createElement('p', {}, truncate(description, 330))
+        ),
+        createElement('div', { class: 'result-statbar' },
+            createMetaItem('✣', 'Casting Time', spell.castingTime),
+            createMetaItem('◎', 'Range', spell.range),
+            createMetaItem('⌛', 'Duration', spell.duration),
+            createMetaItem('◊', 'Components', spell.components)
+        ),
+        createElement('div', { class: 'result-actions' },
+            createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'favorite', 'data-spell-id': spell.id }, state.favorites.has(spell.id) ? '★ Favorited' : '☆ Add to Favorites'),
+            createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'view-active' }, '▤ View in List'),
+            createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'roll-again' }, '↻ Roll Again')
+        )
     );
 }
 
@@ -253,7 +295,8 @@ function displaySpellList() {
     }
 
     const filteredSpells = getFilteredSpells();
-    document.getElementById('listCount').textContent = `${filteredSpells.length} of ${spellData.length} spells shown`;
+    const visibleSpells = filteredSpells.slice(0, state.visibleLimit);
+    document.getElementById('listCount').textContent = `Showing ${visibleSpells.length} of ${filteredSpells.length} spells`;
 
     if (filteredSpells.length === 0) {
         list.replaceChildren(
@@ -262,21 +305,19 @@ function displaySpellList() {
                 createElement('p', {}, 'Loosen a filter or try a different incantation.')
             )
         );
+        document.getElementById('loadMoreBtn').hidden = true;
         return;
     }
 
-    const fragment = document.createDocumentFragment();
-    filteredSpells.forEach((spell) => {
-        fragment.append(renderSpellRow(spell));
-    });
-    list.replaceChildren(fragment);
+    list.replaceChildren(...visibleSpells.map(renderSpellRow));
+    document.getElementById('loadMoreBtn').hidden = visibleSpells.length >= filteredSpells.length;
 }
 
 function getFilteredSpells() {
     return [...spellData]
         .filter((spell) => {
-            const matchesLevel = state.listLevel === 'All' || spell.level === state.listLevel;
-            const matchesCasting = state.listCasting === 'Any' || spell.castingTime === state.listCasting;
+            const matchesLevel = state.levelFilters.has(spell.level);
+            const matchesCasting = state.castingFilters.has(spell.castingTime);
             const matchesFavorite = !state.favoritesOnly || state.favorites.has(spell.id);
             const haystack = `${spell.name} ${spell.base} ${spell.description}`.toLowerCase();
             const matchesSearch = !state.searchTerm || haystack.includes(state.searchTerm);
@@ -299,31 +340,35 @@ function compareSpells(a, b) {
 }
 
 function renderSpellRow(spell) {
-    const row = createElement('article', { class: 'spell-row', 'data-spell-id': spell.id });
-    const title = createElement('div', { class: 'spell-row-title' },
-        createElement('div', { class: 'spell-sigil', 'aria-hidden': 'true' }, spell.name.charAt(0)),
-        createElement('div', {},
-            createElement('h3', {}, spell.name),
-            createElement('p', {}, `${levelLabel(spell.level)}${spell.base ? ` from ${spell.base}` : ''}`)
+    return createElement('article', { class: 'spell-row', 'data-spell-id': spell.id },
+        createElement('div', { class: 'spell-row-title' },
+            createElement('img', { src: spell.icon, alt: '', class: 'spell-thumb' }),
+            createElement('div', {},
+                createElement('h3', {}, spell.name),
+                createElement('p', {}, `${levelLabel(spell.level)}${spell.base ? ` from ${spell.base}` : ''}`)
+            )
+        ),
+        renderTagRow(spell.tags),
+        createElement('div', { class: 'row-meta' },
+            createElement('span', {}, `✣ ${spell.castingTime}`),
+            createElement('span', {}, `◎ ${spell.range}`),
+            createElement('span', {}, `⌛ ${spell.duration}`)
+        ),
+        createElement('div', { class: 'row-actions' },
+            createElement('button', {
+                type: 'button',
+                class: `star-button${state.favorites.has(spell.id) ? ' active' : ''}`,
+                'data-action': 'favorite',
+                'data-spell-id': spell.id,
+                'aria-label': state.favorites.has(spell.id) ? `Remove ${spell.name} from favorites` : `Add ${spell.name} to favorites`
+            }, state.favorites.has(spell.id) ? '★' : '☆'),
+            createElement('button', { type: 'button', class: 'row-open', 'data-action': 'open-spell', 'data-spell-id': spell.id }, 'Open')
         )
     );
+}
 
-    const quickMeta = createElement('div', { class: 'row-meta' },
-        createElement('span', {}, spell.castingTime),
-        createElement('span', {}, spell.range),
-        createElement('span', {}, spell.duration),
-        createElement('span', {}, spell.concentration === 'Yes' ? 'Concentration' : 'No concentration')
-    );
-
-    const snippet = createElement('p', { class: 'spell-snippet' }, truncate(spell.description, 210));
-    const controls = createElement('div', { class: 'row-actions' },
-        createFavoriteButton(spell, 'icon-button'),
-        createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'roll-spell', 'data-spell-id': spell.id }, 'Roll this'),
-        createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'open-spell', 'data-spell-id': spell.id }, 'Open')
-    );
-
-    row.append(title, quickMeta, snippet, controls);
-    return row;
+function renderTagRow(tags) {
+    return createElement('div', { class: 'tag-row' }, ...tags.map((tag) => createElement('span', {}, tag)));
 }
 
 function renderRecentRolls() {
@@ -331,9 +376,7 @@ function renderRecentRolls() {
     const recentSpells = state.recent.map(getSpellById).filter(Boolean);
 
     if (recentSpells.length === 0) {
-        recentContainer.replaceChildren(
-            createElement('p', { class: 'recent-empty' }, 'No rolls yet. The first one gets the dramatic lighting.')
-        );
+        recentContainer.replaceChildren(createElement('p', { class: 'recent-empty' }, 'No rolls yet.'));
         return;
     }
 
@@ -359,15 +402,11 @@ function handleSpellListClick(event) {
     if (button.dataset.action === 'favorite') {
         toggleFavorite(spell.id);
     }
-    if (button.dataset.action === 'roll-spell') {
+    if (button.dataset.action === 'open-spell') {
         state.rollLevel = spell.level;
         state.rollCasting = 'Any';
         showSpell(spell, { record: true, pulse: true });
-        renderStaticControls();
-        switchPage('spinnerPage');
-    }
-    if (button.dataset.action === 'open-spell') {
-        showSpell(spell, { record: true, pulse: true });
+        renderControls();
         switchPage('spinnerPage');
     }
 }
@@ -379,6 +418,7 @@ function handleRecentClick(event) {
     }
     const spell = getSpellById(button.dataset.spellId);
     showSpell(spell, { record: false, pulse: true });
+    switchPage('spinnerPage');
 }
 
 function handleResultClick(event) {
@@ -387,7 +427,7 @@ function handleResultClick(event) {
         return;
     }
 
-    const spell = getSpellById(state.activeSpellId);
+    const spell = getSpellById(button.dataset.spellId || state.activeSpellId);
     if (!spell) {
         return;
     }
@@ -395,36 +435,18 @@ function handleResultClick(event) {
     if (button.dataset.action === 'favorite') {
         toggleFavorite(spell.id);
     }
-    if (button.dataset.action === 'copy-active') {
-        copySpell(spell);
-    }
     if (button.dataset.action === 'view-active') {
-        state.listLevel = spell.level;
+        state.levelFilters = new Set([spell.level]);
         state.searchTerm = spell.name.toLowerCase();
+        state.visibleLimit = 25;
         document.getElementById('spellSearch').value = spell.name;
-        renderStaticControls();
+        renderControls();
         displaySpellList();
         switchPage('listPage');
     }
     if (button.dataset.action === 'roll-again') {
         generateSpell();
     }
-}
-
-function createFavoriteButton(spell, className) {
-    const isFavorite = state.favorites.has(spell.id);
-    return createElement(
-        'button',
-        {
-            type: 'button',
-            class: `${className} favorite-button${isFavorite ? ' active' : ''}`,
-            'data-action': 'favorite',
-            'data-spell-id': spell.id,
-            'aria-pressed': isFavorite ? 'true' : 'false',
-            'aria-label': isFavorite ? `Remove ${spell.name} from favorites` : `Add ${spell.name} to favorites`
-        },
-        isFavorite ? '★' : '☆'
-    );
 }
 
 function toggleFavorite(spellId) {
@@ -446,44 +468,25 @@ function renderFavoritesCount() {
     document.getElementById('favoriteCount').textContent = state.favorites.size.toString();
 }
 
-function copySpell(spell) {
-    const text = `${spell.name}\n${levelLabel(spell.level)} chaos magic\nCasting Time: ${spell.castingTime}\nRange: ${spell.range}\nDuration: ${spell.duration}\nComponents: ${spell.components}\n\n${spell.description}`;
-    if (!navigator.clipboard) {
-        document.getElementById('rollMessage').textContent = 'Copy is unavailable in this browser.';
-        return;
-    }
-
-    navigator.clipboard.writeText(text)
-        .then(() => {
-            document.getElementById('rollMessage').textContent = `${spell.name} copied to your notes.`;
-        })
-        .catch(() => {
-            document.getElementById('rollMessage').textContent = 'Copy is unavailable in this browser.';
-        });
-}
-
 function switchPage(pageId) {
-    state.page = pageId;
-    document.querySelectorAll('.page').forEach((page) => {
-        page.classList.toggle('active', page.id === pageId);
-    });
     document.querySelectorAll('[data-page-target]').forEach((button) => {
         const isActive = button.dataset.pageTarget === pageId;
         button.classList.toggle('active', isActive);
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
+    document.getElementById(pageId).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function resetFilters() {
-    state.listLevel = 'All';
-    state.listCasting = 'Any';
-    state.listSort = 'level';
-    state.searchTerm = '';
-    state.favoritesOnly = false;
-    document.getElementById('spellSearch').value = '';
-    document.getElementById('sortSpells').value = 'level';
-    document.getElementById('favoritesOnly').checked = false;
-    renderStaticControls();
+function toggleAllLevels() {
+    if (state.levelFilters.size === LEVELS.length) {
+        state.levelFilters = new Set(INITIAL_LEVEL_FILTERS);
+        document.getElementById('showAllLevelsBtn').textContent = 'Show more⌄';
+    } else {
+        state.levelFilters = new Set(LEVELS);
+        document.getElementById('showAllLevelsBtn').textContent = 'Show less⌃';
+    }
+    state.visibleLimit = 25;
+    renderControls();
     displaySpellList();
 }
 
@@ -505,29 +508,78 @@ function updateRollMessage(spell) {
     document.getElementById('rollMessage').textContent = `${pool.length} ${levelLabel(state.rollLevel).toLowerCase()} options in the current cauldron.`;
 }
 
-function createMetaItem(label, value) {
+function createMetaItem(icon, label, value) {
     return createElement('div', { class: 'meta-item' },
-        createElement('span', {}, label),
+        createElement('span', { 'aria-hidden': 'true' }, icon),
+        createElement('small', {}, label),
         createElement('strong', {}, value)
     );
 }
 
 function getFeaturedSpell() {
-    return spellData.find((spell) => spell.level === 'Cantrip') || spellData[0];
+    return spellData.find((spell) => /clump|plant|vine|root|growth|nature/i.test(`${spell.name} ${spell.base} ${spell.description}`))
+        || spellData.find((spell) => spell.level === '1st')
+        || spellData[0];
 }
 
 function getSpellById(id) {
     return spellData.find((spell) => spell.id === id);
 }
 
+function chooseSpellIcon({ name, base, description }) {
+    const text = `${name} ${base} ${description}`.toLowerCase();
+    if (/entangle|clump|vine|root|plant|growth|nature|tree|wood|thorn/.test(text)) return ICONS.vines;
+    if (/fire|burn|flame|heat|frosting/.test(text)) return ICONS.fire;
+    if (/thunder|lightning|storm|spark|wave/.test(text)) return ICONS.lightning;
+    if (/shield|armor|ward|protect|defen/.test(text)) return ICONS.shield;
+    if (/heal|cure|life|wound/.test(text)) return ICONS.healing;
+    return ICONS.chaos;
+}
+
+function buildTags({ name, base, description, castingTime, concentration }) {
+    const text = `${name} ${base} ${description}`.toLowerCase();
+    const tags = [];
+    const add = (tag) => {
+        if (!tags.includes(tag) && tags.length < 4) tags.push(tag);
+    };
+
+    if (/fire|burn|flame|damage|thunder|frost|slap|missile/.test(text)) add('Damage');
+    if (/shield|armor|ward|protect|defen/.test(text)) add('Defense');
+    if (/charm|illusion|disguise|hideous|mind|thought/.test(text)) add('Illusion');
+    if (/move|push|restrain|immobil|prone|control|clump/.test(text)) add('Control');
+    if (/plant|vine|root|nature|tree|wood|thorn/.test(text)) add('Nature');
+    if (/heal|cure|life|wound/.test(text)) add('Healing');
+    if (concentration === 'Yes') add('Focus');
+    if (castingTime === 'Reaction') add('Reaction');
+    if (castingTime === 'Bonus Action') add('Swift');
+    add('Chaos');
+    return tags;
+}
+
+function rangeFallback(description) {
+    const match = description.match(/\b(\d+\s?(?:ft|foot|feet)|self|touch)\b/i);
+    return match ? match[0].replace(/^self$/i, 'Self') : 'See text';
+}
+
 function levelLabel(level) {
-    if (level === 'All') {
-        return 'All levels';
-    }
     if (level === 'Cantrip') {
         return 'Cantrip';
     }
-    return `${level} level`;
+    return `${level}-level`;
+}
+
+function toggleSetValue(set, value, checked) {
+    if (checked) {
+        set.add(value);
+    } else {
+        set.delete(value);
+    }
+}
+
+function ensureNonEmpty(set, fallback) {
+    if (set.size === 0) {
+        set.add(fallback);
+    }
 }
 
 function splitDescription(description) {
@@ -562,7 +614,7 @@ function saveStoredList(key, value) {
     try {
         localStorage.setItem(key, JSON.stringify(value));
     } catch {
-        // Local storage is a convenience only; the generator still works without it.
+        // Local storage is optional; the app still works without it.
     }
 }
 
