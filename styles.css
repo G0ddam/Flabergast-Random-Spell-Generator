@@ -158,28 +158,14 @@ a {
     min-width: 0;
     gap: 0;
     margin-left: 138px;
-    margin-top: 17px;
+    margin-top: 15px;
 }
 
-.brand-title {
+.brand-logo {
     display: block;
-    color: #f4dfae;
-    font-size: 4rem;
-    font-weight: 800;
-    line-height: 0.88;
-    text-shadow:
-        0 2px 0 rgba(71, 41, 28, 0.74),
-        0 4px 16px rgba(0, 0, 0, 0.48);
-}
-
-.brand-subtitle {
-    display: block;
-    margin-top: 6px;
-    color: var(--lime);
-    font-size: 1.45rem;
-    font-weight: 800;
-    line-height: 1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.52);
+    width: 360px;
+    height: auto;
+    filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.42));
 }
 
 .mode-tabs {
@@ -200,12 +186,11 @@ a {
     padding: 0 28px;
     color: var(--cream);
     background:
+        url("attached_assets/ui/generated/tab-inactive.png") center / 100% 100% no-repeat,
         linear-gradient(180deg, rgba(74, 38, 68, 0.96), rgba(38, 19, 44, 0.96));
-    border: 1px solid rgba(194, 143, 82, 0.54);
-    border-radius: 7px;
-    box-shadow:
-        inset 0 0 0 2px rgba(255, 232, 180, 0.06),
-        0 8px 18px rgba(0, 0, 0, 0.34);
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.34);
     cursor: pointer;
     font-size: 1.06rem;
     font-weight: 700;
@@ -215,32 +200,15 @@ a {
 
 .mode-tab::before,
 .mode-tab::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 9px;
-    height: 22px;
-    border-top: 1px solid rgba(194, 143, 82, 0.7);
-    border-bottom: 1px solid rgba(194, 143, 82, 0.7);
-    transform: translateY(-50%);
-}
-
-.mode-tab::before {
-    left: 8px;
-}
-
-.mode-tab::after {
-    right: 8px;
+    display: none;
 }
 
 .mode-tab.active {
     color: #1c2108;
     background:
+        url("attached_assets/ui/generated/tab-active.png") center / 100% 100% no-repeat,
         linear-gradient(180deg, #d9fb65, #b8dc45);
-    border-color: #e5ff82;
-    box-shadow:
-        inset 0 0 0 2px rgba(32, 39, 8, 0.18),
-        0 0 18px rgba(201, 244, 86, 0.28);
+    box-shadow: 0 0 18px rgba(201, 244, 86, 0.28);
 }
 
 .mode-tab:hover {
@@ -307,32 +275,19 @@ main {
     overflow: hidden;
     color: var(--ink);
     background:
-        linear-gradient(180deg, rgba(255, 247, 219, 0.65), rgba(220, 193, 137, 0.3)),
-        url("attached_assets/ui/generated/parchment-texture.png") center / 520px 520px repeat,
-        linear-gradient(180deg, var(--paper-light), var(--paper));
-    border: 1px solid #7d5a38;
-    border-radius: var(--radius);
+        url("attached_assets/ui/generated/parchment-panel.png") center / 100% 100% no-repeat,
+        url("attached_assets/ui/generated/parchment-texture.png") center / 520px 520px repeat;
+    border: 0;
+    border-radius: 0;
     box-shadow: var(--shadow);
 }
 
 .parchment-panel::before {
-    content: "";
-    position: absolute;
-    inset: 10px;
-    pointer-events: none;
-    border: 1px solid rgba(67, 43, 31, 0.24);
-    border-radius: 6px;
-    box-shadow: inset 0 0 28px rgba(76, 42, 27, 0.09);
+    display: none;
 }
 
 .parchment-panel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-        linear-gradient(90deg, rgba(67, 37, 24, 0.16), transparent 8%, transparent 92%, rgba(67, 37, 24, 0.16)),
-        linear-gradient(180deg, rgba(67, 37, 24, 0.18), transparent 12%, transparent 88%, rgba(67, 37, 24, 0.16));
+    display: none;
 }
 
 .conjurer-panel {
@@ -369,9 +324,11 @@ main {
     min-height: 38px;
     padding: 0 14px;
     color: #1f1520;
-    background: rgba(244, 229, 193, 0.72);
-    border: 1px solid rgba(78, 53, 39, 0.24);
-    border-radius: 5px;
+    background:
+        url("attached_assets/ui/generated/control-button.png") center / 100% 100% no-repeat,
+        rgba(244, 229, 193, 0.72);
+    border: 0;
+    border-radius: 0;
     cursor: pointer;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.45),
@@ -380,10 +337,11 @@ main {
 
 .segment.active {
     color: #192207;
-    background: linear-gradient(180deg, #dbff73, #b4db3e);
-    border-color: #5f8122;
+    background:
+        linear-gradient(rgba(190, 246, 66, 0.82), rgba(190, 246, 66, 0.82)),
+        url("attached_assets/ui/generated/control-button.png") center / 100% 100% no-repeat;
     box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 0.28),
+        inset 0 0 0 3px rgba(95, 129, 34, 0.62),
         0 0 0 2px rgba(82, 116, 28, 0.18);
 }
 
@@ -1122,12 +1080,8 @@ main {
         margin-top: 12px;
     }
 
-    .brand-title {
-        font-size: clamp(2.2rem, 10vw, 3.2rem);
-    }
-
-    .brand-subtitle {
-        font-size: clamp(0.95rem, 4vw, 1.2rem);
+    .brand-logo {
+        width: min(330px, 70vw);
     }
 
     .mode-tabs,
@@ -1231,12 +1185,8 @@ main {
         margin-top: 8px;
     }
 
-    .brand-title {
-        font-size: clamp(1.8rem, 11vw, 2.4rem);
-    }
-
-    .brand-subtitle {
-        font-size: 0.85rem;
+    .brand-logo {
+        width: min(260px, 72vw);
     }
 
     .utility-actions {
