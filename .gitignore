@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Local server and editor noise
+.DS_Store
+*.log
+
+# Generated captures or scratch files
+tmp/
+screenshots/

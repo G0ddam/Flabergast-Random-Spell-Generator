@@ -2,104 +2,157 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chaos Magic Spell Spinner</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Fondamento&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Flabbergast is a playful chaos magic spell spinner and searchable spell library for tabletop fantasy games.">
+    <title>Flabbergast | Chaos Magic Spell Spinner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <nav>
-        <button id="spinnerPageBtn" class="nav-button active">Spell Spinner</button>
-        <button id="listPageBtn" class="nav-button">Spell List</button>
-    </nav>
-    
-    <div id="spinnerPage" class="page active">
-        <img src="attached_assets/flabbergast!!.png" alt="Flabbergast!!" class="flabbergast-logo" style="max-width: 400px; margin: 20px 0;">
-        <h1>Chaos Magic Spell Spinner</h1>
-        <select id="spellLevel">
-            <option value="Cantrip">Cantrip</option>
-            <option value="1st">1st Level</option>
-            <option value="2nd">2nd Level</option>
-            <option value="3rd">3rd Level</option>
-            <option value="4th">4th Level</option>
-            <option value="5th">5th Level</option>
-            <option value="6th">6th Level</option>
-            <option value="7th">7th Level</option>
-            <option value="8th">8th Level</option>
-            <option value="9th">9th Level</option>
-        </select>
-        <button class="hexagon button">Flabbergast!</button>
-        <div id="spellOutput" class="hexagon output">
-            <h2><span id="spellName"></span></h2>
-            <div class="spell-metadata">
-                <p><strong>Casting Time:</strong> <span id="spellCastingTime"></span></p>
-                <p><strong>Concentration:</strong> <span id="spellConcentration"></span></p>
-                <p><strong>Range:</strong> <span id="spellRange"></span></p>
-                <p><strong>Duration:</strong> <span id="spellDuration"></span></p>
-                <p><strong>Components:</strong> <span id="spellComponents"></span></p>
-            </div>
-            <div class="spell-description">
-                <h3>Description</h3>
-                <p><span id="spellDescription"></span></p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="listPage" class="page">
-        <h1>Chaos Magic Spell List</h1>
-        <div class="filter-controls">
-            <input type="text" id="spellSearch" placeholder="Search spells by name..." class="search-input">
-            <div class="filter-categories">
-                <div class="filter-category">
-                    <div class="category-header">
-                        <h3>Casting Time</h3>
-                        <span class="toggle-arrow">▼</span>
-                    </div>
-                    <div class="filter-toggles collapsed">
-                        <label><input type="checkbox" data-filter="castingTime" value="Action"> Action</label>
-                        <label><input type="checkbox" data-filter="castingTime" value="Bonus Action"> Bonus Action</label>
-                        <label><input type="checkbox" data-filter="castingTime" value="Reaction"> Reaction</label>
-                    </div>
+    <a class="skip-link" href="#mainContent">Skip to spells</a>
+
+    <div class="app-shell">
+        <header class="app-header">
+            <div class="brand-lockup" aria-label="Flabbergast Chaos Magic Spell Spinner">
+                <img src="attached_assets/dragon dice neon.png" alt="" class="brand-orb">
+                <div class="brand-copy">
+                    <img src="attached_assets/flabbergast!!.png" alt="Flabbergast" class="flabbergast-logo">
+                    <h1>Chaos Magic Spell Spinner</h1>
                 </div>
             </div>
-        </div>
-        <select id="spellLevelList">
-            <option value="Cantrip">Cantrip</option>
-            <option value="1st">1st Level</option>
-            <option value="2nd">2nd Level</option>
-            <option value="3rd">3rd Level</option>
-            <option value="4th">4th Level</option>
-            <option value="5th">5th Level</option>
-            <option value="6th">6th Level</option>
-            <option value="7th">7th Level</option>
-            <option value="8th">8th Level</option>
-            <option value="9th">9th Level</option>
-        </select>
-        <div id="spellList"></div>
-    </div>
-    
-    <script src="script.js"></script>
 
-    <footer>
-        <div style="text-align: center; padding: 20px;">
-            <p>© <span id="year">2025</span> Only Wizards Inc. All rights reserved.</p>
-            <p>
-                <a href="mailto:contact@onlywizardsinc.com" style="color: #32CD32; text-decoration: none;">
-                    Email: contact@onlywizards.com
-                </a>
-            </p>
-            <p>
-                <a href="https://rss.com/podcasts/owdcast/" target="_blank" style="color: #32CD32; text-decoration: none;">
-                    Listen to Our Podcast
-                </a>
-            </p>
-        </div>
-        <script>
-            document.getElementById("year").textContent = new Date().getFullYear();
-        </script>
-    </footer>
+            <nav class="mode-tabs" aria-label="Primary views">
+                <button id="spinnerPageBtn" class="mode-tab active" type="button" data-page-target="spinnerPage" aria-pressed="true">
+                    <span class="tab-icon" aria-hidden="true">✦</span>
+                    Spell Spinner
+                </button>
+                <button id="listPageBtn" class="mode-tab" type="button" data-page-target="listPage" aria-pressed="false">
+                    <span class="tab-icon" aria-hidden="true">☰</span>
+                    Spell List
+                </button>
+            </nav>
+
+            <div class="header-actions" aria-label="Library stats">
+                <span><strong id="spellTotal">0</strong> spells</span>
+                <span><strong id="favoriteCount">0</strong> favorites</span>
+            </div>
+        </header>
+
+        <main id="mainContent">
+            <section id="spinnerPage" class="page active" aria-labelledby="spinnerHeading">
+                <div class="spinner-grid">
+                    <section class="panel conjurer-panel" aria-labelledby="spinnerHeading">
+                        <div class="panel-heading">
+                            <div>
+                                <h2 id="spinnerHeading">Choose the chaos</h2>
+                                <p>Level and timing shape the surge.</p>
+                            </div>
+                            <span class="panel-mark" aria-hidden="true">d20</span>
+                        </div>
+
+                        <div class="control-stack">
+                            <div class="control-group">
+                                <div class="control-label">Spell Level</div>
+                                <div id="spellLevelButtons" class="segmented-grid" role="group" aria-label="Spell Level"></div>
+                            </div>
+
+                            <div class="control-group">
+                                <div class="control-label">Casting Time</div>
+                                <div id="rollCastingButtons" class="segmented-row" role="group" aria-label="Casting Time"></div>
+                            </div>
+                        </div>
+
+                        <button id="randomSpellBtn" class="summon-button" type="button">
+                            <span class="summon-art" aria-hidden="true">
+                                <img src="attached_assets/dragon dice flabbergast.png" alt="">
+                            </span>
+                            <span class="summon-copy">
+                                <strong>Flabbergast!</strong>
+                                <small>Conjure a random spell</small>
+                            </span>
+                        </button>
+
+                        <div id="rollMessage" class="status-line" role="status" aria-live="polite">Spell data is gathering sparks...</div>
+                    </section>
+
+                    <section id="spellOutput" class="panel spell-result" aria-live="polite" aria-labelledby="spellName">
+                        <div class="result-empty">
+                            <span class="empty-rune" aria-hidden="true">✧</span>
+                            <h2 id="spellName">Ready when you are</h2>
+                            <p>No spell has answered yet.</p>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="panel recent-panel" aria-labelledby="recentHeading">
+                    <div class="panel-heading compact">
+                        <div>
+                            <h2 id="recentHeading">Recently conjured</h2>
+                            <p>Fresh trouble from this table.</p>
+                        </div>
+                        <button id="clearRecentBtn" class="ghost-button" type="button">Clear</button>
+                    </div>
+                    <div id="recentRolls" class="recent-rolls" aria-live="polite"></div>
+                </section>
+            </section>
+
+            <section id="listPage" class="page" aria-labelledby="listHeading">
+                <section class="panel library-panel">
+                    <div class="library-header">
+                        <div>
+                            <h2 id="listHeading">Spell List</h2>
+                            <p>A sharper shelf for every strange incantation.</p>
+                        </div>
+                        <button id="clearFiltersBtn" class="ghost-button" type="button">Reset filters</button>
+                    </div>
+
+                    <div class="library-toolbar">
+                        <label class="search-control" for="spellSearch">
+                            <span aria-hidden="true">⌕</span>
+                            <input type="search" id="spellSearch" placeholder="Search spells" autocomplete="off">
+                        </label>
+
+                        <label class="select-control" for="spellLevelList">
+                            <span>Spell Level</span>
+                            <select id="spellLevelList"></select>
+                        </label>
+
+                        <label class="select-control" for="sortSpells">
+                            <span>Sort by</span>
+                            <select id="sortSpells">
+                                <option value="level">Level</option>
+                                <option value="name">Name</option>
+                                <option value="casting">Casting Time</option>
+                                <option value="duration">Duration</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="filter-row" aria-label="Casting Time">
+                        <div class="control-label">Casting Time</div>
+                        <div id="listCastingButtons" class="segmented-row"></div>
+                        <label class="favorite-filter">
+                            <input id="favoritesOnly" type="checkbox">
+                            Favorites only
+                        </label>
+                    </div>
+
+                    <div class="list-status">
+                        <span id="listCount">No spells loaded yet.</span>
+                    </div>
+
+                    <div id="spellList" class="spell-list" aria-live="polite"></div>
+                </section>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <span>© <span id="year"></span> Only Wizards Inc.</span>
+            <a href="mailto:contact@onlywizardsinc.com">contact@onlywizardsinc.com</a>
+            <a href="https://rss.com/podcasts/owdcast/" target="_blank" rel="noreferrer">Podcast</a>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

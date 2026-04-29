@@ -1,4 +1,21 @@
 {
+  "name": "flabbergast-random-spell-generator",
+  "version": "2.0.0",
+  "description": "A polished chaos magic spell spinner and searchable spell library for tabletop fantasy games.",
+  "private": true,
+  "scripts": {
+    "start": "serve -s . -l 3000",
+    "dev": "serve -s . -l 3000",
+    "check": "node --check script.js"
+  },
+  "keywords": [
+    "dnd",
+    "spells",
+    "tabletop",
+    "random-generator",
+    "flabbergast"
+  ],
+  "license": "UNLICENSED",
   "dependencies": {
     "serve": "^14.2.4"
   }
