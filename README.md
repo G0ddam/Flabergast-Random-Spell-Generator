@@ -11,7 +11,7 @@ Flabbergast is a playful chaos magic spell spinner and searchable spell library 
 - Safe text rendering for spell descriptions.
 - Existing Flabbergast and dragon-dice artwork reused from `attached_assets/`.
 - Project-local SVG UI assets in `attached_assets/ui/` for parchment texture, wax seal, and spell thumbnails.
-- Fresh generated PNG UI assets in `attached_assets/ui/generated/` for the logo, dragon emblem, button plates, parchment sheet, ribbon, wax seal, textures, and spell icons.
+- Fresh generated PNG UI assets in `attached_assets/ui/generated/` for the logo, dragon emblem, button plates, parchment sheet, row strip, filter panel, ribbon, wax seal, textures, and spell icons.
 
 ## Run Locally
 
