@@ -361,8 +361,7 @@ function renderSpellRow(spell) {
                 'data-action': 'favorite',
                 'data-spell-id': spell.id,
                 'aria-label': state.favorites.has(spell.id) ? `Remove ${spell.name} from favorites` : `Add ${spell.name} to favorites`
-            }, state.favorites.has(spell.id) ? '★' : '☆'),
-            createElement('button', { type: 'button', class: 'row-open', 'data-action': 'open-spell', 'data-spell-id': spell.id }, 'Open')
+            }, state.favorites.has(spell.id) ? '★' : '☆')
         )
     );
 }
@@ -390,25 +389,33 @@ function renderRecentRolls() {
 
 function handleSpellListClick(event) {
     const button = event.target.closest('button[data-action]');
-    if (!button) {
+    if (button) {
+        const spell = getSpellById(button.dataset.spellId || state.activeSpellId);
+        if (!spell) {
+            return;
+        }
+        if (button.dataset.action === 'favorite') {
+            toggleFavorite(spell.id);
+        }
         return;
     }
 
-    const spell = getSpellById(button.dataset.spellId || state.activeSpellId);
+    const row = event.target.closest('.spell-row[data-spell-id]');
+    if (row) {
+        openSpellFromList(row.dataset.spellId);
+    }
+}
+
+function openSpellFromList(spellId) {
+    const spell = getSpellById(spellId);
     if (!spell) {
         return;
     }
-
-    if (button.dataset.action === 'favorite') {
-        toggleFavorite(spell.id);
-    }
-    if (button.dataset.action === 'open-spell') {
-        state.rollLevel = spell.level;
-        state.rollCasting = 'Any';
-        showSpell(spell, { record: true, pulse: true });
-        renderControls();
-        switchPage('spinnerPage');
-    }
+    state.rollLevel = spell.level;
+    state.rollCasting = 'Any';
+    showSpell(spell, { record: true, pulse: true });
+    renderControls();
+    switchPage('spinnerPage');
 }
 
 function handleRecentClick(event) {
