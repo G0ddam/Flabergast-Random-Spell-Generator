@@ -125,6 +125,8 @@ a {
 }
 
 .topbar {
+    position: relative;
+    z-index: 20;
     display: grid;
     grid-template-columns: clamp(360px, 29vw, 420px) minmax(390px, 1fr) minmax(300px, 390px);
     align-items: center;
@@ -135,6 +137,7 @@ a {
 
 .brand-lockup {
     position: relative;
+    z-index: 21;
     display: flex;
     align-items: center;
     gap: 0;
@@ -147,6 +150,7 @@ a {
 
 .brand-emblem {
     position: absolute;
+    z-index: 2;
     left: -6px;
     top: 4px;
     width: 116px;
@@ -156,6 +160,8 @@ a {
 }
 
 .brand-text {
+    position: relative;
+    z-index: 1;
     display: grid;
     min-width: 0;
     gap: 0;
@@ -179,6 +185,8 @@ a {
 
 .mode-tab {
     position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -191,7 +199,7 @@ a {
         url("attached_assets/ui/generated/tab-inactive.png") center / 100% 100% no-repeat,
         linear-gradient(180deg, rgba(74, 38, 68, 0.96), rgba(38, 19, 44, 0.96));
     border: 0;
-    border-radius: 0;
+    border-radius: 18px;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.34);
     cursor: pointer;
     font-size: 1rem;
@@ -200,17 +208,36 @@ a {
     transition: transform 160ms ease, filter 160ms ease;
 }
 
-.mode-tab::before,
-.mode-tab::after {
+.mode-tab::before {
     display: none;
+}
+
+.mode-tab::after {
+    content: "";
+    position: absolute;
+    inset: 8px 16px;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 999px;
+    opacity: 0;
+    background: radial-gradient(ellipse at center, rgba(216, 255, 102, 0.64), rgba(178, 226, 63, 0.3) 48%, transparent 72%);
+    filter: blur(8px);
+    transition: opacity 160ms ease;
 }
 
 .mode-tab.active {
     color: #1c2108;
     background:
         url("attached_assets/ui/generated/tab-active.png") center / 100% 100% no-repeat,
-        linear-gradient(180deg, #d9fb65, #b8dc45);
-    box-shadow: 0 0 18px rgba(201, 244, 86, 0.28);
+        radial-gradient(ellipse at center, rgba(220, 255, 97, 0.72), rgba(169, 212, 55, 0.34) 56%, rgba(127, 166, 43, 0.14) 72%, transparent 82%),
+        linear-gradient(180deg, rgba(217, 251, 101, 0.72), rgba(184, 220, 69, 0.58));
+    box-shadow:
+        0 0 22px rgba(201, 244, 86, 0.3),
+        0 8px 18px rgba(0, 0, 0, 0.34);
+}
+
+.mode-tab.active::after {
+    opacity: 1;
 }
 
 .mode-tab:hover {
@@ -260,6 +287,8 @@ a {
 }
 
 main {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: 10px;
     padding-top: 10px;
@@ -276,27 +305,14 @@ main {
     position: relative;
     overflow: hidden;
     color: var(--ink);
-    background:
-        radial-gradient(circle at 18% 14%, rgba(255, 251, 229, 0.42), transparent 18rem),
-        radial-gradient(circle at 84% 82%, rgba(130, 92, 48, 0.12), transparent 20rem),
-        linear-gradient(180deg, rgba(255, 246, 218, 0.9), rgba(229, 204, 157, 0.9)),
-        url("attached_assets/ui/generated/parchment-texture.png") center / 520px 520px repeat;
-    border: 1px solid var(--paper-edge);
+    background: url("attached_assets/ui/generated/parchment-panel.png") center / 100% 100% no-repeat;
+    border: 0;
     border-radius: 8px;
-    box-shadow: var(--shadow);
+    box-shadow: none;
 }
 
 .parchment-panel::before {
-    content: "";
-    position: absolute;
-    inset: 14px;
-    z-index: 1;
-    pointer-events: none;
-    border: 1px solid var(--paper-line);
-    border-radius: 5px;
-    box-shadow:
-        inset 0 0 0 1px rgba(255, 251, 231, 0.2),
-        inset 0 0 34px rgba(75, 42, 25, 0.12);
+    display: none;
 }
 
 .parchment-panel::after {
@@ -305,18 +321,14 @@ main {
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background:
-        linear-gradient(90deg, rgba(76, 45, 29, 0.18), transparent 4%, transparent 96%, rgba(76, 45, 29, 0.16)),
-        linear-gradient(180deg, rgba(78, 47, 29, 0.16), transparent 5%, transparent 94%, rgba(78, 47, 29, 0.18)),
-        radial-gradient(circle at 3% 5%, rgba(78, 47, 29, 0.14), transparent 8rem),
-        radial-gradient(circle at 97% 94%, rgba(78, 47, 29, 0.14), transparent 8rem);
+    background: transparent;
     mix-blend-mode: multiply;
-    opacity: 0.82;
+    opacity: 0;
 }
 
 .conjurer-panel {
-    min-height: 430px;
-    padding: 26px 42px 18px;
+    min-height: 448px;
+    padding: 70px 76px 38px;
 }
 
 .control-stack {
@@ -324,6 +336,7 @@ main {
     z-index: 2;
     display: grid;
     gap: 16px;
+    max-width: 100%;
 }
 
 .control-group {
@@ -338,22 +351,31 @@ main {
 
 .level-tabs,
 .casting-tabs {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 6px;
+    display: grid;
+    gap: 7px;
+}
+
+.level-tabs {
+    grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+}
+
+.casting-tabs {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
 }
 
 .segment {
     position: relative;
+    overflow: hidden;
     min-width: 56px;
-    min-height: 39px;
+    min-height: 36px;
     padding: 0 10px;
     color: #1f1520;
     background:
+        url("attached_assets/ui/generated/control-button.png") center / 100% 100% no-repeat,
         linear-gradient(180deg, rgba(255, 244, 214, 0.94), rgba(229, 205, 160, 0.9)),
         url("attached_assets/ui/generated/parchment-texture.png") center / 260px 260px repeat;
     border: 1px solid rgba(91, 62, 38, 0.36);
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     box-shadow:
         inset 0 1px 0 rgba(255, 252, 232, 0.72),
@@ -369,50 +391,63 @@ main {
 .segment.active {
     color: #192207;
     background:
-        linear-gradient(180deg, rgba(212, 255, 92, 0.96), rgba(175, 224, 62, 0.96));
-    border-color: rgba(91, 129, 30, 0.78);
+        url("attached_assets/ui/generated/control-button.png") center / 100% 100% no-repeat,
+        radial-gradient(ellipse at center, rgba(224, 255, 106, 0.96), rgba(184, 230, 62, 0.68) 58%, rgba(126, 164, 38, 0.22) 76%, transparent 88%),
+        linear-gradient(180deg, rgba(213, 255, 84, 0.74), rgba(176, 229, 55, 0.68));
+    border: 1px solid rgba(92, 128, 30, 0.48);
+    border-image: none;
     box-shadow:
-        inset 0 0 0 3px rgba(95, 129, 34, 0.62),
+        inset 0 0 0 4px rgba(246, 255, 181, 0.3),
+        inset 0 -10px 18px rgba(80, 115, 25, 0.18),
         inset 0 1px 0 rgba(255, 255, 211, 0.66),
-        0 0 0 2px rgba(82, 116, 28, 0.18);
+        0 0 0 1px rgba(82, 116, 28, 0.16),
+        0 0 18px rgba(203, 248, 72, 0.24);
 }
 
 .casting-tabs .segment {
-    min-width: 116px;
+    min-width: 0;
     text-align: center;
 }
 
 .summon-banner {
     position: relative;
     z-index: 2;
+    container-type: inline-size;
     display: grid;
-    grid-template-columns: minmax(165px, 0.82fr) minmax(185px, 230px) minmax(205px, 1fr);
+    grid-template-columns: minmax(118px, 0.74fr) minmax(136px, 0.86fr) minmax(0, 1.2fr);
     align-items: center;
-    column-gap: 16px;
+    column-gap: clamp(8px, 1.8cqi, 16px);
     width: 100%;
-    min-height: 176px;
-    margin-top: 38px;
-    padding: 18px 28px;
-    color: var(--ink);
+    min-height: clamp(160px, 23cqi, 184px);
+    margin-top: 40px;
+    padding: 24px clamp(24px, 4.2cqi, 38px);
+    color: var(--cream);
     background:
-        radial-gradient(circle at 50% 47%, rgba(195, 255, 78, 0.24), transparent 13rem),
-        linear-gradient(90deg, rgba(255, 248, 225, 0.58), rgba(239, 219, 174, 0.44), rgba(255, 248, 225, 0.5)),
-        url("attached_assets/ui/generated/parchment-texture.png") center / 420px 420px repeat;
-    border: 1px solid rgba(92, 62, 39, 0.34);
+        radial-gradient(circle at 48% 50%, rgba(196, 255, 76, 0.24), transparent 13rem),
+        radial-gradient(circle at 50% 50%, rgba(134, 75, 128, 0.34), transparent 18rem),
+        linear-gradient(90deg, rgba(28, 12, 34, 0.96), rgba(48, 22, 52, 0.94), rgba(27, 12, 34, 0.96)),
+        url("attached_assets/ui/generated/dark-leather-texture.png") center / 360px 360px repeat;
+    border: 1px solid rgba(202, 151, 82, 0.58);
     border-radius: 6px;
     box-shadow:
-        inset 0 0 0 1px rgba(255, 252, 231, 0.32),
-        inset 0 0 26px rgba(80, 47, 28, 0.1);
+        inset 0 0 0 2px rgba(255, 230, 154, 0.08),
+        inset 0 0 0 9px rgba(16, 7, 23, 0.22),
+        inset 0 0 34px rgba(0, 0, 0, 0.34),
+        0 8px 20px rgba(50, 26, 20, 0.18);
     cursor: pointer;
     isolation: isolate;
+    overflow: hidden;
 }
 
 .summon-banner::before {
     content: "";
     position: absolute;
-    inset: 12px 16px;
-    border: 1px solid rgba(74, 48, 34, 0.21);
+    inset: 18px 20px;
+    border: 1px solid rgba(211, 165, 93, 0.36);
     border-radius: 5px;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 244, 190, 0.08),
+        inset 0 0 22px rgba(0, 0, 0, 0.22);
 }
 
 .summon-banner::after {
@@ -432,9 +467,10 @@ main {
     position: relative;
     z-index: 3;
     min-width: 0;
+    max-width: 100%;
     justify-self: center;
-    color: #342331;
-    font-size: 0.98rem;
+    color: rgba(248, 237, 204, 0.88);
+    font-size: clamp(0.82rem, 1.35cqi, 0.98rem);
     font-style: italic;
     line-height: 1.42;
     text-align: left;
@@ -445,7 +481,7 @@ main {
     z-index: 3;
     display: grid;
     place-items: center;
-    width: min(230px, 100%);
+    width: min(230px, 27cqi, 100%);
     height: auto;
     aspect-ratio: 1;
     justify-self: center;
@@ -471,23 +507,31 @@ main {
     display: grid;
     gap: 8px;
     min-width: 0;
+    max-width: 100%;
     justify-self: start;
+    overflow: hidden;
 }
 
 .summon-copy strong {
-    font-size: clamp(2.38rem, 3.15vw, 3.45rem);
+    max-width: 100%;
+    font-size: clamp(1.75rem, 4.8cqi, 3.35rem);
     line-height: 0.94;
-    color: #27172d;
+    color: #f8edcc;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
     letter-spacing: 0;
     white-space: nowrap;
 }
 
 .summon-copy small {
-    color: #3d2a35;
-    font-size: 0.88rem;
+    color: #c9f456;
+    max-width: 100%;
+    font-size: clamp(0.72rem, 1.25cqi, 0.88rem);
     font-weight: 700;
     letter-spacing: 0.11em;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 .status-line {
@@ -500,15 +544,16 @@ main {
 }
 
 .result-panel {
-    min-height: 430px;
-    padding: 78px 30px 18px;
+    overflow: visible;
+    min-height: 450px;
+    padding: 92px 34px 28px;
 }
 
 .result-ribbon {
     position: absolute;
     z-index: 4;
-    top: 12px;
-    left: 12px;
+    top: 18px;
+    left: 18px;
     width: min(315px, calc(100% - 128px));
     height: 56px;
     display: flex;
@@ -535,12 +580,12 @@ main {
 .wax-seal {
     position: absolute;
     z-index: 5;
-    top: -8px;
-    right: 14px;
+    top: -18px;
+    right: 24px;
     width: 108px;
-    height: 126px;
+    height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 8px 12px rgba(64, 24, 22, 0.2));
+    filter: drop-shadow(0 10px 12px rgba(64, 24, 22, 0.26));
 }
 
 .result-empty {
@@ -565,6 +610,29 @@ main {
     font-size: clamp(2.15rem, 3.05vw, 3.35rem);
     line-height: 0.95;
     letter-spacing: 0;
+}
+
+.result-heading {
+    min-width: 0;
+    padding-right: 136px;
+}
+
+.spell-name {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.result-heading h2.spell-name--long-single {
+    font-size: clamp(2.05rem, 2.35vw, 2.75rem);
+}
+
+.result-heading h2.spell-name--extra-long-single {
+    font-size: clamp(1.85rem, 2.05vw, 2.35rem);
+    line-height: 1;
+}
+
+.spell-name-line {
+    display: block;
 }
 
 .result-empty p {
@@ -623,7 +691,7 @@ main {
 .result-description {
     position: relative;
     z-index: 2;
-    margin-top: 18px;
+    margin-top: 20px;
     color: #221721;
     font-size: 1.02rem;
     line-height: 1.4;
@@ -679,7 +747,7 @@ main {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 18px;
 }
 
 .secondary-button,
@@ -694,6 +762,7 @@ main {
     padding: 0 8px;
     color: #241720;
     background:
+        url("attached_assets/ui/generated/control-button.png") center / 100% 100% no-repeat,
         linear-gradient(180deg, rgba(255, 243, 213, 0.92), rgba(223, 196, 150, 0.9)),
         url("attached_assets/ui/generated/parchment-texture.png") center / 260px 260px repeat;
     border: 1px solid rgba(91, 62, 38, 0.34);
@@ -771,6 +840,7 @@ main {
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr);
     gap: 14px;
+    align-items: start;
 }
 
 .filter-rail,
@@ -787,15 +857,49 @@ main {
 .filter-rail {
     position: relative;
     overflow: hidden;
-    padding: 14px 18px 18px;
+    isolation: isolate;
+    align-self: start;
+    padding: 46px 40px 42px;
     background:
-        linear-gradient(180deg, rgba(41, 21, 49, 0.9), rgba(19, 10, 28, 0.96)),
+        radial-gradient(ellipse at 50% 0%, rgba(75, 51, 81, 0.32), transparent 15rem),
+        linear-gradient(180deg, rgba(35, 19, 46, 0.94), rgba(19, 10, 29, 0.97)),
         url("attached_assets/ui/generated/dark-leather-texture.png") center / 440px 440px repeat;
     border: 1px solid rgba(194, 143, 82, 0.34);
     border-radius: 8px;
     box-shadow:
         inset 0 0 0 1px rgba(255, 228, 168, 0.08),
+        inset 0 0 34px rgba(0, 0, 0, 0.34),
         var(--shadow);
+}
+
+.filter-rail::before,
+.filter-rail::after {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.filter-rail::before {
+    z-index: 0;
+    border: 2px solid rgba(190, 139, 80, 0.48);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 224, 149, 0.16),
+        inset 0 0 24px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(53, 30, 27, 0.72);
+}
+
+.filter-rail::after {
+    z-index: 0;
+    background:
+        radial-gradient(circle at 0 0, transparent 0 29px, rgba(194, 143, 82, 0.68) 30px 31px, transparent 33px),
+        radial-gradient(circle at 100% 0, transparent 0 29px, rgba(194, 143, 82, 0.68) 30px 31px, transparent 33px),
+        radial-gradient(circle at 0 100%, transparent 0 29px, rgba(194, 143, 82, 0.68) 30px 31px, transparent 33px),
+        radial-gradient(circle at 100% 100%, transparent 0 29px, rgba(194, 143, 82, 0.68) 30px 31px, transparent 33px),
+        linear-gradient(90deg, transparent 0 12px, rgba(216, 170, 98, 0.24) 13px 15px, transparent 17px calc(100% - 17px), rgba(216, 170, 98, 0.24) calc(100% - 15px) calc(100% - 13px), transparent calc(100% - 12px)),
+        linear-gradient(180deg, transparent 0 12px, rgba(216, 170, 98, 0.2) 13px 15px, transparent 17px calc(100% - 17px), rgba(216, 170, 98, 0.2) calc(100% - 15px) calc(100% - 13px), transparent calc(100% - 12px));
+    opacity: 0.9;
 }
 
 .filter-rail > * {
@@ -804,15 +908,17 @@ main {
 }
 
 .search-box {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: flex;
     align-items: center;
     gap: 10px;
     min-height: 48px;
     padding: 0 12px;
-    background:
-        linear-gradient(180deg, rgba(16, 8, 22, 0.68), rgba(13, 7, 20, 0.76));
-    border: 1px solid rgba(194, 143, 82, 0.28);
-    border-radius: 5px;
+    background: url("attached_assets/ui/generated/tab-inactive.png") center / 100% 100% no-repeat;
+    border: 0;
+    border-radius: 18px;
     box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.18);
 }
 
@@ -836,7 +942,7 @@ main {
 }
 
 .filter-rail > h2 {
-    margin: 16px 0 12px;
+    margin: 18px 0 12px;
     padding-bottom: 10px;
     color: #cda56b;
     border-bottom: 1px solid rgba(194, 143, 82, 0.33);
@@ -848,7 +954,7 @@ main {
     display: grid;
     gap: 8px;
     margin-top: 14px;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     border-bottom: 1px solid rgba(194, 143, 82, 0.25);
 }
 
@@ -860,15 +966,18 @@ main {
 
 .checkbox-stack {
     display: grid;
-    gap: 6px;
+    gap: 8px;
 }
 
 .check-row {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    width: fit-content;
+    max-width: 100%;
     color: rgba(248, 237, 204, 0.86);
     font-size: 0.92rem;
+    line-height: 1.1;
     cursor: pointer;
 }
 
@@ -879,7 +988,7 @@ main {
 }
 
 .library-panel {
-    padding: 10px;
+    padding: 16px 12px 12px;
     border-radius: 8px;
 }
 
@@ -888,7 +997,7 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 0 10px 10px;
+    padding: 0 10px 14px;
 }
 
 .library-toolbar p {
@@ -939,26 +1048,27 @@ main {
 
 .spell-list {
     display: grid;
-    gap: 6px;
+    gap: 8px;
 }
 
 .spell-row {
     position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-columns: minmax(250px, 1.05fr) minmax(220px, 0.76fr) minmax(320px, 1fr) 42px;
     align-items: center;
     gap: 14px;
-    min-height: 66px;
-    padding: 7px 12px;
+    min-height: 72px;
+    padding: 8px 16px;
     color: var(--ink);
     background:
-        linear-gradient(180deg, rgba(255, 248, 226, 0.9), rgba(233, 207, 160, 0.92)),
-        url("attached_assets/ui/generated/parchment-texture.png") center / 360px 360px repeat;
-    border: 1px solid rgba(112, 78, 45, 0.46);
-    border-radius: 6px;
+        url("attached_assets/ui/generated/row-strip.png") center / calc(100% + 10px) calc(100% + 18px) no-repeat,
+        url("attached_assets/ui/generated/parchment-texture.png") center / 360px 360px repeat,
+        #ead3a3;
+    border: 0;
+    border-radius: 9px;
     box-shadow:
-        inset 0 1px 0 rgba(255, 252, 232, 0.56),
-        inset 0 -9px 16px rgba(115, 76, 39, 0.08),
+        inset 0 0 0 2px rgba(82, 50, 30, 0.18),
         0 2px 3px rgba(0, 0, 0, 0.18);
     cursor: pointer;
     overflow: hidden;
@@ -967,7 +1077,7 @@ main {
 .spell-row::before {
     content: "";
     position: absolute;
-    inset: 4px 5px;
+    inset: 7px 9px;
     pointer-events: none;
     border: 1px solid rgba(83, 54, 34, 0.16);
     border-radius: 4px;
@@ -987,8 +1097,8 @@ main {
 }
 
 .spell-thumb {
-    width: 58px;
-    height: 58px;
+    width: 54px;
+    height: 54px;
     flex: 0 0 auto;
 }
 
@@ -1142,6 +1252,7 @@ main {
         grid-template-columns: minmax(240px, 1fr) repeat(2, minmax(180px, 0.6fr));
         gap: 14px;
         align-items: start;
+        padding: 34px 44px;
     }
 
     .filter-rail > h2,
@@ -1199,11 +1310,11 @@ main {
     .conjurer-panel,
     .result-panel {
         min-height: 0;
-        padding: 22px 16px;
+        padding: 58px 46px 38px;
     }
 
     .result-panel {
-        padding-top: 72px;
+        padding-top: 86px;
     }
 
     .result-ribbon {
@@ -1238,6 +1349,10 @@ main {
         text-align: center;
     }
 
+    .result-heading {
+        padding-right: 0;
+    }
+
     .result-statbar,
     .result-actions,
     .row-meta {
@@ -1253,6 +1368,7 @@ main {
 
     .filter-rail {
         grid-template-columns: 1fr;
+        padding: 46px 44px 42px;
     }
 
     .spell-row {
@@ -1262,6 +1378,27 @@ main {
 
     .row-actions {
         justify-content: space-between;
+    }
+}
+
+@media (max-width: 700px) {
+    .level-tabs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .casting-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .segment,
+    .level-tabs .segment:first-child,
+    .casting-tabs .segment {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .control-stack {
+        gap: 14px;
     }
 }
 
@@ -1303,6 +1440,14 @@ main {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .conjurer-panel {
+        padding: 54px 38px 34px;
+    }
+
+    .filter-rail {
+        padding: 44px 36px 40px;
+    }
+
     .segment,
     .casting-tabs .segment {
         min-width: 0;
@@ -1315,7 +1460,9 @@ main {
 
     .wax-seal {
         width: 76px;
-        height: 76px;
+        height: auto;
+        top: -12px;
+        right: 14px;
     }
 }
 

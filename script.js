@@ -265,7 +265,7 @@ function renderSpellResult(spell) {
         createElement('div', { class: 'result-body' },
             createElement('img', { src: spell.icon, alt: '', class: 'result-icon' }),
             createElement('div', { class: 'result-heading' },
-                createElement('h2', { id: 'spellName' }, spell.name),
+                renderSpellNameHeading(spell.name),
                 createElement('p', { class: 'spell-school' }, `${levelLabel(spell.level)} chaos magic`),
                 renderTagRow(spell.tags)
             )
@@ -285,6 +285,50 @@ function renderSpellResult(spell) {
             createElement('button', { type: 'button', class: 'secondary-button', 'data-action': 'roll-again' }, '↻ Roll Again')
         )
     );
+}
+
+function renderSpellNameHeading(name) {
+    return createElement(
+        'h2',
+        { id: 'spellName', class: `spell-name ${getSpellNameClass(name)}`.trim(), 'aria-label': name },
+        ...splitSpellNameLines(name).map((line) => createElement('span', { class: 'spell-name-line' }, line))
+    );
+}
+
+function getSpellNameClass(name) {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    const longestWord = words.reduce((longest, word) => Math.max(longest, word.length), 0);
+
+    if (words.length === 1 && longestWord >= 13) {
+        return 'spell-name--extra-long-single';
+    }
+    if (words.length === 1 && longestWord >= 9) {
+        return 'spell-name--long-single';
+    }
+    return '';
+}
+
+function splitSpellNameLines(name) {
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length < 2) {
+        return [name];
+    }
+    if (words.length === 2) {
+        return words;
+    }
+
+    let bestSplit = 1;
+    let bestScore = Infinity;
+    for (let index = 1; index < words.length; index += 1) {
+        const first = words.slice(0, index).join(' ');
+        const second = words.slice(index).join(' ');
+        const score = Math.abs(first.length - second.length);
+        if (score < bestScore) {
+            bestScore = score;
+            bestSplit = index;
+        }
+    }
+    return [words.slice(0, bestSplit).join(' '), words.slice(bestSplit).join(' ')];
 }
 
 function displaySpellList() {
