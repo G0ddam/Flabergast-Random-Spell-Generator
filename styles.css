@@ -651,11 +651,12 @@ main {
 .result-icon,
 .spell-thumb {
     display: block;
-    object-fit: cover;
-    background: #251329;
-    border: 2px solid #c9d75b;
-    border-radius: 7px;
-    box-shadow: 0 8px 18px rgba(39, 21, 27, 0.24);
+    object-fit: contain;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: none;
 }
 
 .result-icon {
